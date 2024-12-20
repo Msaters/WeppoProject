@@ -1,0 +1,22 @@
+footer {
+    height: 5vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+main {
+    margin: 0;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+#canvas {
+    border: 1px solid black;
+    width: 80%;
+    height: 80%;
+    position: relative;
+}
