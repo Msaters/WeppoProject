@@ -1,8 +1,28 @@
+body {
+  background-color: #888;
+}
+
 footer {
     height: 5vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 20px; /* Zmniejsz margines */
+    position: relative; /* Ustawienie pozycji, jeśli chcesz przesuwać */
+    bottom: 20px; /* Przesuń tekst wyżej */
+    right: 2%;
+}
+
+#pageSteer {
+  position: relative;
+  bottom: 75%;
+  left: 15%;
+}
+
+#CurveSteer {
+  position: absolute;
+  top: 2%; /* Dostosuj według potrzeb */
+  left: 45%; /* Dostosuj według potrzeb */
 }
 
 main {
@@ -15,6 +35,7 @@ main {
 }
 
 #canvas {
+    background-color: #a7a1a1;
     border: 1px solid black;
     width: 80%;
     height: 80%;

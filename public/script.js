@@ -14,11 +14,6 @@ function drawPoint(x, y, r, g, b) {
     ctx.fillRect(Math.floor(x), Math.floor(y), 10, 10);
 }
 
-function drawLine(point1, point2) {
-    // to do, dodac kolorki ctx.fillStyle = 
-    // grubosc itp
-    
-}
 
 function updateCurve(arr) {
     // dodaj punkty
