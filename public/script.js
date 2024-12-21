@@ -1,37 +1,65 @@
+import { createPointsWithDeCastlejau } from "/drawingBezierLogic.js";
+
 var points = [];
-
-function putPointsOnCanvas(params) {
-    // to do
-}
-
-function addPoint(x, y) {
-    // Wyświetl kliknięcie
-    const point = document.createElement('div');
-    point.style.position = 'absolute';
-    point.style.width = '10px';
-    point.style.height = '10px';
-    point.style.backgroundColor = 'red';
-    point.style.borderRadius = '50%';
-    point.style.left = `${x - 5}px`;
-    point.style.top = `${y - 5}px`;
-    canvas.appendChild(point);
-}
-
 const canvas = document.getElementById('canvas');
+canvas.width = canvas.offsetWidth; // Ustawienie na szerokość elementu w pikselach
+canvas.height = canvas.offsetHeight; // Ustawienie na wysokość elementu w pikselach
+var canvasWidth = canvas.width;
+var canvasHeight = canvas.height;
+var ctx = canvas.getContext("2d");
+
+function drawPoint(x, y, r, g, b) {
+    // to do, dodac kolorki 
+    ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+    ctx.fillRect(Math.floor(x), Math.floor(y), 10, 10);
+}
+
+function drawLine(point1, point2) {
+    // to do, dodac kolorki ctx.fillStyle = 
+    // grubosc itp
+    
+}
+
+function updateCurve(arr) {
+    // dodaj punkty
+    for(let i = 0; i < arr.length; i++) {
+        drawPoint(arr[i].xcord, arr[i].ycord, 0, 26, 0);
+    }
+
+    //dodaj linie
+    let curvePoints = createPointsWithDeCastlejau(1000, arr);
+    ctx.moveTo(Math.floor(curvePoints[0].xcord), Math.floor(curvePoints[0].ycord));
+    ctx.beginPath();
+
+    for(let i = 0; i < curvePoints.length; i++)
+    {
+        ctx.lineTo(Math.floor(curvePoints[i].xcord), Math.floor(curvePoints[i].ycord));
+    }
+
+    ctx.strokeStyle = 'black';    // Ustaw kolor linii
+    ctx.lineWidth = 2;            // Ustaw grubość linii
+    ctx.stroke();
+}
+
+function updateCanvas(arr) {
+    console.log("clearing canvas");
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    //byc moze wiecej curvow
+    updateCurve(arr);
+}
+
 canvas.addEventListener('click', (event) => {
-    console.log(event);
+    //console.log(event);
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
     console.log({x, y});
-    console.log("clientX: ", event.clientX);
-    console.log("clientY: ", event.clientX);
-    console.log("rectleft: ", rect.left);
-    console.log("rectright: ", rect.right);
     points.push({"xcord": x, "ycord": y});
 
-    addPoint(x, y);
+    updateCanvas(points);
 });
+
+
 
 var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
@@ -77,6 +105,13 @@ async function saveCordinates() {
     }
 }
 
+function drawPointsFromArrayToCanvas(array) {
+    for (let index = 0; index < array.length; index++) {
+        const element = array[index];
+        addPoint(element.xcord, element.ycord);
+    }
+}
+
 function pupUpModalForm() {
     modal.style.display = "block";
     modal_content.innerHTML = 
@@ -106,7 +141,7 @@ function pupUpModalForm() {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log('Odpowiedź serwera:', data); 
+                drawPointsFromArrayToCanvas(data);
                 modal.style.display = "none";
             } else {
                 if(response.status == 404) {
@@ -126,7 +161,7 @@ function pupUpModalForm() {
             console.log("alercik " + alert_msg);
             modal_content.innerHTML = 
             `<span class="close">&times;</span>
-            <p id="textInModal" style="color:red">Podales nie poprawne ID ` + ID.ID + `</p>`;
+            <p id="textInModal" style="color:red">Podales nie poprawne ID </p>`;
         }
     });
 }
