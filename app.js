@@ -36,7 +36,7 @@ app.post('/save-coordinates', (req, res) => {
     console.log(cordinatesObject);
 
     // Zapisz współrzędne do pliku JSON
-    fs.appendFile('coordinates.json', JSON.stringify(cordinatesObject) + ',\n', (err) => {
+    fs.appendFile('coordinates.json', JSON.stringify(cordinatesObject) + '\n', (err) => {
         if (err) {
             console.error('Błąd podczas zapisu:', err);
             return res.status(500).send({ error: 'Błąd serwera' });
