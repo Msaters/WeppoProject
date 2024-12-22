@@ -1,0 +1,32 @@
+/*
+
+Animation {
+    "pages": Page[],
+    "PreviewImage": Img,
+    "ID": id
+}
+
+Page {
+    "curves": Curve[]
+}
+
+Curve {
+    "settings" : {
+        "r": ,
+        "g": ,
+        "b": ,
+        "a": ,
+        "width": 
+    },
+
+    "points": [
+        {
+            "xcord": ,
+            "ycord": 
+        }
+    ]
+
+}
+
+
+*/

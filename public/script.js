@@ -1,6 +1,8 @@
-import { createPointsWithDeCastlejau } from "/drawingBezierLogic.js";
+import curvesLogic from './curvesLogic.js';
+import drawingLogic from './drawingLogic.js';
+import pageLogic from './pagesLogic.js';
+import data from './animationData.js';
 
-var points = [];
 const canvas = document.getElementById('canvas');
 canvas.width = canvas.offsetWidth; // Ustawienie na szerokość elementu w pikselach
 canvas.height = canvas.offsetHeight; // Ustawienie na wysokość elementu w pikselach
@@ -8,54 +10,81 @@ var canvasWidth = canvas.width;
 var canvasHeight = canvas.height;
 var ctx = canvas.getContext("2d");
 
-function drawPoint(x, y, r, g, b) {
-    // to do, dodac kolorki 
-    ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
-    ctx.fillRect(Math.floor(x), Math.floor(y), 10, 10);
+const initialize = () => {
+    pageLogic.addNewPage(); 
+    curvesLogic.addNewCurve(data.animation.pages[data.PageIndex].curves);
+    data.actualPage = data.animation.pages[data.PageIndex];
+    data.actualCurve = data.animation.pages[data.PageIndex].curves[data.actualCurveIndex];
+    console.log(data.animation);
 }
+initialize();
 
-
-function updateCurve(arr) {
-    // dodaj punkty
-    for(let i = 0; i < arr.length; i++) {
-        drawPoint(arr[i].xcord, arr[i].ycord, 0, 26, 0);
-    }
-
-    //dodaj linie
-    let curvePoints = createPointsWithDeCastlejau(1000, arr);
-    ctx.moveTo(Math.floor(curvePoints[0].xcord), Math.floor(curvePoints[0].ycord));
-    ctx.beginPath();
-
-    for(let i = 0; i < curvePoints.length; i++)
-    {
-        ctx.lineTo(Math.floor(curvePoints[i].xcord), Math.floor(curvePoints[i].ycord));
-    }
-
-    ctx.strokeStyle = 'black';    // Ustaw kolor linii
-    ctx.lineWidth = 2;            // Ustaw grubość linii
-    ctx.stroke();
-}
-
-function updateCanvas(arr) {
-    console.log("clearing canvas");
-    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-    //byc moze wiecej curvow
-    updateCurve(arr);
+function updateCanvas() {
+    drawingLogic.updateCanvas(data.actualPage.curves, ctx, canvasWidth, canvasHeight);
 }
 
 canvas.addEventListener('click', (event) => {
-    //console.log(event);
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
-    console.log({x, y});
-    points.push({"xcord": x, "ycord": y});
-
-    updateCanvas(points);
+    curvesLogic.addPointsToCurve(data.actualCurve, {"xcord": Math.floor(x), "ycord": Math.floor(y)});
+    updateCanvas();
 });
 
 
+// curve Logic for buttons
+function addNewCurve() {
+    curvesLogic.addNewCurve(data.actualPage.curves);
+}
+document.getElementById("addNewCurve").addEventListener("click", addNewCurve);
 
+function moveCurveRight() {
+    curvesLogic.moveCurveRight();
+}
+document.getElementById("moveCurveRight").addEventListener("click", moveCurveRight);
+
+function moveCurveLeft() {
+    curvesLogic.moveCurveLeft();
+}
+document.getElementById("moveCurveLeft").addEventListener("click", moveCurveLeft);
+
+function CurveUndo() {
+    curvesLogic.CurveUndo(data.actualCurve);
+    updateCanvas();
+}
+document.getElementById("CurveUndo").addEventListener("click", CurveUndo);
+
+// pages logic buttons
+function addNewPage() {
+    pageLogic.addNewPage();
+}
+document.getElementById("addNewPage").addEventListener("click", addNewPage);
+
+const movePageRight = () => {
+    pageLogic.movePageRight();
+    console.log(data.animation);
+    updateCanvas();
+}
+document.getElementById("movePageRight").addEventListener("click", movePageRight);
+
+const movePageLeft = () => {
+    pageLogic.movePageLeft();
+    updateCanvas();
+}
+document.getElementById("movePageLeft").addEventListener("click", movePageLeft);
+
+
+//settings
+/*document.getElementById("settingsForm").addEventListener("submit", async function(event) {
+
+}*/
+
+
+
+
+
+
+// zczytywanie z modala
 var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
 var modal_content  = document.getElementById("myModalContet");
@@ -100,12 +129,7 @@ async function saveCordinates() {
     }
 }
 
-function drawPointsFromArrayToCanvas(array) {
-    for (let index = 0; index < array.length; index++) {
-        const element = array[index];
-        addPoint(element.xcord, element.ycord);
-    }
-}
+
 
 function pupUpModalForm() {
     modal.style.display = "block";
@@ -164,3 +188,4 @@ function pupUpModalForm() {
 async function getCordinates() {
     pupUpModalForm();
 }
+
