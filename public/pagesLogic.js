@@ -30,10 +30,16 @@ Curve {
 
 
 */
+import data from './script.js';
 
+function createNewPage() {
+    return {
+        "curves": []
+    }
+}
 
-function addNewPage(params) {
-    // to do
+function addNewPage() {
+    data.animation.pages.push(createNewPage());
 }
 
 function movePageRight(params) {
@@ -46,3 +52,8 @@ function movePageLeft(params) {
 
 //document.getElementById("settingsForm").addEventListener("submit", async function(event) {
 //to do
+
+
+export default {
+    addNewPage,
+}

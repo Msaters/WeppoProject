@@ -1,6 +1,7 @@
-import { createPointsWithDeCastlejau } from "/drawingBezierLogic.js";
+import curvesLogic from './curvesLogic.js';
+import drawingLogic from './drawingLogic.js';
+import pageLogic from './pagesLogic.js';
 
-var points = [];
 const canvas = document.getElementById('canvas');
 canvas.width = canvas.offsetWidth; // Ustawienie na szerokość elementu w pikselach
 canvas.height = canvas.offsetHeight; // Ustawienie na wysokość elementu w pikselach
@@ -8,53 +9,68 @@ var canvasWidth = canvas.width;
 var canvasHeight = canvas.height;
 var ctx = canvas.getContext("2d");
 
-function drawPoint(x, y, r, g, b) {
-    // to do, dodac kolorki 
-    ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
-    ctx.fillRect(Math.floor(x), Math.floor(y), 10, 10);
+// creating Data
+var PageIndex = 0;
+var actualCurveIndex = 0;
+var actualPage;
+var actualCurve;
+var animation = {
+    pages: [],
+    ID: 0,
+    //PreviewImg: Img
 }
 
-
-function updateCurve(arr) {
-    // dodaj punkty
-    for(let i = 0; i < arr.length; i++) {
-        drawPoint(arr[i].xcord, arr[i].ycord, 0, 26, 0);
-    }
-
-    //dodaj linie
-    let curvePoints = createPointsWithDeCastlejau(1000, arr);
-    ctx.moveTo(Math.floor(curvePoints[0].xcord), Math.floor(curvePoints[0].ycord));
-    ctx.beginPath();
-
-    for(let i = 0; i < curvePoints.length; i++)
-    {
-        ctx.lineTo(Math.floor(curvePoints[i].xcord), Math.floor(curvePoints[i].ycord));
-    }
-
-    ctx.strokeStyle = 'black';    // Ustaw kolor linii
-    ctx.lineWidth = 2;            // Ustaw grubość linii
-    ctx.stroke();
+export default {
+    animation,
+    actualCurveIndex,
+    PageIndex,
 }
 
-function updateCanvas(arr) {
-    console.log("clearing canvas");
-    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-    //byc moze wiecej curvow
-    updateCurve(arr);
+const initialize = () => {
+    pageLogic.addNewPage(); 
+    curvesLogic.addNewCurve(animation.pages[PageIndex].curves);
+    actualPage = animation.pages[PageIndex];
+    actualCurve = animation.pages[PageIndex].curves[actualCurveIndex];
+    console.log(animation);
 }
+initialize();
 
 canvas.addEventListener('click', (event) => {
+    console.log("actualCurveIndex", curvesLogic.actualCurveIndex);
     //console.log(event);
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
     console.log({x, y});
-    points.push({"xcord": x, "ycord": y});
+    curvesLogic.addPointsToCurve(actualCurve, {"xcord": Math.floor(x), "ycord": Math.floor(y)});
 
-    updateCanvas(points);
+    drawingLogic.updateCanvas(actualPage.curves, ctx, canvasWidth, canvasHeight);
 });
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// zczytywanie 
 
 var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
@@ -100,12 +116,7 @@ async function saveCordinates() {
     }
 }
 
-function drawPointsFromArrayToCanvas(array) {
-    for (let index = 0; index < array.length; index++) {
-        const element = array[index];
-        addPoint(element.xcord, element.ycord);
-    }
-}
+
 
 function pupUpModalForm() {
     modal.style.display = "block";
@@ -164,3 +175,4 @@ function pupUpModalForm() {
 async function getCordinates() {
     pupUpModalForm();
 }
+
