@@ -1,19 +1,19 @@
 import { createPointsWithDeCastlejau } from "/drawingBezierLogic.js";
 
-function drawPoint(x, y, r, g, b, ctx) {
+function drawPoint(x, y, r, g, b, ctx, pointWidth, pointHeight) {
     // to do, dodac kolorki 
-    ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
-    ctx.fillRect(x, y, 10, 10);
+    ctx.fillStyle = `rgb(${r}, ${g}, ${b}`;
+    ctx.fillRect(x, y, pointWidth, pointHeight);
 }
 
-function drawCurve(arr, ctx, doIDrawPoints) {
+function drawCurve(arr, ctx, doIDrawPoints, r, g, b, a, lineWidth, pointWidth, pointHeight) {
     if(arr.length === 0) 
         return;
 
     // dodaj punkty
     if(doIDrawPoints)
         for(let i = 0; i < arr.length; i++) {
-            drawPoint(arr[i].xcord, arr[i].ycord, 0, 26, 0, ctx);
+            drawPoint(arr[i].xcord, arr[i].ycord, 0, 26, 0, ctx, pointWidth, pointHeight);
         }
 
     //dodaj linie
@@ -26,8 +26,8 @@ function drawCurve(arr, ctx, doIDrawPoints) {
         ctx.lineTo(Math.floor(curvePoints[i].xcord), Math.floor(curvePoints[i].ycord));
     }
 
-    ctx.strokeStyle = 'black';    // Ustaw kolor linii
-    ctx.lineWidth = 2;            // Ustaw grubość linii
+    ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;    // Ustaw kolor linii
+    ctx.lineWidth = lineWidth;            // Ustaw grubość linii
     ctx.stroke();
 }
 
@@ -38,7 +38,10 @@ function clearCanvas(ctx, canvasWidth, canvasHeight){
 function updateCanvas(array, ctx, canvasWidth, canvasHeight) {
     clearCanvas(ctx, canvasWidth, canvasHeight);
     for (let index = 0; index < array.length; index++) {
-        drawCurve(array[index].points, ctx, true);   
+        console.log(array[index]);
+        let curve = array[index];
+        let settings = curve.settings;
+        drawCurve(curve.points, ctx, true, settings.r, settings.g, settings.b, settings.a, settings.lineWidth, settings.pointWidth, settings.pointHeight);   
     }
 }
 

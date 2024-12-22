@@ -2,7 +2,7 @@ import pageLogic from './pagesLogic.js';
 import data from './animationData.js';
 
 
-function createNewCurve(r, g, b, a, width) {
+function createNewCurve(r, g, b, a, width, pointWidth, pointHeight) {
     return {
         type: "Curve",
         settings: {
@@ -10,14 +10,16 @@ function createNewCurve(r, g, b, a, width) {
             g: g,
             b: b,
             a: a,
-            width: width
+            lineWidth: width,
+            pointWidth: pointWidth,
+            pointHeight: pointHeight
         },
         points: []
     };
 }
 
 function createNewDefaultCurve() {
-    return createNewCurve(0,0,0,1,2);
+    return createNewCurve(0,0,0,1,2,10,10);
 }
 
 function addNewCurve(curves) {
@@ -34,6 +36,8 @@ function addPointsToCurve(curve, point) {
 
 function updateActualCurve() {
     data.actualCurve = data.actualPage.curves[data.actualCurveIndex];
+    data.actualPage.curveIndex = data.actualCurveIndex;
+    console.log(data.animation);
 }
 
 function moveCurveRight() {

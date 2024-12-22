@@ -24,22 +24,17 @@ function updateCanvas() {
 }
 
 canvas.addEventListener('click', (event) => {
-    console.log("actualCurveIndex", curvesLogic.actualCurveIndex);
-    //console.log(event);
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
-    console.log({x, y});
     curvesLogic.addPointsToCurve(data.actualCurve, {"xcord": Math.floor(x), "ycord": Math.floor(y)});
     updateCanvas();
 });
 
 
-
 // curve Logic for buttons
 function addNewCurve() {
     curvesLogic.addNewCurve(data.actualPage.curves);
-    console.log(data.animation);
 }
 document.getElementById("addNewCurve").addEventListener("click", addNewCurve);
 
@@ -59,25 +54,37 @@ function CurveUndo() {
 }
 document.getElementById("CurveUndo").addEventListener("click", CurveUndo);
 
+// pages logic buttons
+function addNewPage() {
+    pageLogic.addNewPage();
+}
+document.getElementById("addNewPage").addEventListener("click", addNewPage);
+
+const movePageRight = () => {
+    pageLogic.movePageRight();
+    console.log(data.animation);
+    updateCanvas();
+}
+document.getElementById("movePageRight").addEventListener("click", movePageRight);
+
+const movePageLeft = () => {
+    pageLogic.movePageLeft();
+    updateCanvas();
+}
+document.getElementById("movePageLeft").addEventListener("click", movePageLeft);
+
+
+//settings
+/*document.getElementById("settingsForm").addEventListener("submit", async function(event) {
+
+}*/
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-// zczytywanie 
-
+// zczytywanie z modala
 var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
 var modal_content  = document.getElementById("myModalContet");

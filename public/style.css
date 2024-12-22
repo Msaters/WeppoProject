@@ -13,15 +13,26 @@ footer {
     right: 2%;
 }
 
+.form-container {
+  display: flex;
+  flex-direction: row; /* Układa elementy w wierszu */
+  gap: 20px; /* Odstęp między elementami */
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column; /* Ustawienie w pionie: label nad input */
+}
+
 #pageSteer {
   position: relative;
-  bottom: 75%;
-  left: 15%;
+  bottom: 90%;
+  left: 20%;
 }
 
 #CurveSteer {
   position: absolute;
-  top: 2%; /* Dostosuj według potrzeb */
+  top: 0%; /* Dostosuj według potrzeb */
   left: 45%; /* Dostosuj według potrzeb */
 }
 
