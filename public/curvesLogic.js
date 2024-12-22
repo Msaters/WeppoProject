@@ -19,11 +19,10 @@ function createNewCurve(r, g, b, a, width, pointWidth, pointHeight) {
 }
 
 function createNewDefaultCurve() {
-    return createNewCurve(0,0,0,1,2,10,10);
+    return createNewCurve(0,0,0,1,3,10,10);
 }
 
 function addNewCurve(curves) {
-    console.log(curves);
     curves.push(
         createNewDefaultCurve()
     )
@@ -37,7 +36,6 @@ function addPointsToCurve(curve, point) {
 function updateActualCurve() {
     data.actualCurve = data.actualPage.curves[data.actualCurveIndex];
     data.actualPage.curveIndex = data.actualCurveIndex;
-    console.log(data.animation);
 }
 
 function moveCurveRight() {

@@ -6,16 +6,16 @@ import data from './animationData.js';
 const canvas = document.getElementById('canvas');
 canvas.width = canvas.offsetWidth; // Ustawienie na szerokość elementu w pikselach
 canvas.height = canvas.offsetHeight; // Ustawienie na wysokość elementu w pikselach
-var canvasWidth = canvas.width;
-var canvasHeight = canvas.height;
-var ctx = canvas.getContext("2d");
+const canvasWidth = canvas.width;
+const canvasHeight = canvas.height;
+const ctx = canvas.getContext("2d");
 
 const initialize = () => {
+    data.pointsVisibility = true;
     pageLogic.addNewPage(); 
     curvesLogic.addNewCurve(data.animation.pages[data.PageIndex].curves);
     data.actualPage = data.animation.pages[data.PageIndex];
     data.actualCurve = data.animation.pages[data.PageIndex].curves[data.actualCurveIndex];
-    console.log(data.animation);
 }
 initialize();
 
@@ -75,9 +75,79 @@ document.getElementById("movePageLeft").addEventListener("click", movePageLeft);
 
 
 //settings
-/*document.getElementById("settingsForm").addEventListener("submit", async function(event) {
+document.getElementById("settingsForm").addEventListener("submit", (event) => {
+    event.preventDefault();
 
-}*/
+    const R = document.getElementById("R").value;
+    document.getElementById("R").value = "";
+    const G = document.getElementById("G").value;
+    document.getElementById("G").value = "";
+    const B = document.getElementById("B").value;
+    document.getElementById("B").value = "";
+    const A = document.getElementById("A").value;
+    document.getElementById("A").value = "";
+    const LineWidth = document.getElementById("LineWidth").value;
+    document.getElementById("LineWidth").value = "";
+    const PointWidth = document.getElementById("PointWidth").value;
+    document.getElementById("PointWidth").value = "";
+    const PointHeight = document.getElementById("PointHeight").value;
+    document.getElementById("PointHeight").value = "";
+
+    let settings = data.actualCurve.settings;
+    if(PointWidth !== "" && PointHeight !== "") {
+        settings.pointWidth = PointWidth;
+        settings.pointHeight = PointHeight;
+    }
+
+    settings.r = R;
+    settings.g = G;
+    settings.b = B;
+    settings.a = A;
+    settings.lineWidth = LineWidth;
+    updateCanvas();
+});
+
+document.getElementById("reset").addEventListener("click", (event) => {
+    
+    let settings = data.actualCurve.settings;
+    if(settings.r === 0 && settings.g === 0 && settings.b === 0 && settings.lineWidth === 3 && settings.pointWidth === 10 && settings.pointHeight === 10 && settings.a === 1) {
+        document.getElementById("R").value = 0;
+        document.getElementById("G").value = 0;
+        document.getElementById("B").value = 0;
+        document.getElementById("A").value = 1;
+        document.getElementById("LineWidth").value = 3;
+    } else {
+        settings.r = 0;
+        settings.g = 0;
+        settings.b = 0;
+        settings.a = 1;
+        settings.lineWidth = 2;
+        settings.pointWidth = 10;
+        settings.pointHeight = 10;
+    }
+    updateCanvas();
+});
+
+document.getElementById("toggleInput").addEventListener("click", () => {
+    const value = document.getElementById("toggleInput").checked;
+    if(value === true) {
+        data.pointsVisibility = true;
+    } else {
+        data.pointsVisibility = false;
+    }
+    updateCanvas();
+});
+
+
+
+
+
+
+
+
+
+
+
 
 
 
