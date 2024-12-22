@@ -3,6 +3,7 @@ var PageIndex = 0;
 var actualCurveIndex = 0;
 var actualPage;
 var actualCurve;
+var pointsVisibility;
 var animation = {
     type: "animation",
     pages: [],
@@ -16,4 +17,5 @@ export default {
     PageIndex,
     actualCurve,
     actualPage,
+    pointsVisibility
 }
