@@ -1,6 +1,7 @@
 import curvesLogic from './curvesLogic.js';
 import drawingLogic from './drawingLogic.js';
 import pageLogic from './pagesLogic.js';
+import data from './animationData.js';
 
 const canvas = document.getElementById('canvas');
 canvas.width = canvas.offsetWidth; // Ustawienie na szerokość elementu w pikselach
@@ -9,31 +10,18 @@ var canvasWidth = canvas.width;
 var canvasHeight = canvas.height;
 var ctx = canvas.getContext("2d");
 
-// creating Data
-var PageIndex = 0;
-var actualCurveIndex = 0;
-var actualPage;
-var actualCurve;
-var animation = {
-    pages: [],
-    ID: 0,
-    //PreviewImg: Img
-}
-
-export default {
-    animation,
-    actualCurveIndex,
-    PageIndex,
-}
-
 const initialize = () => {
     pageLogic.addNewPage(); 
-    curvesLogic.addNewCurve(animation.pages[PageIndex].curves);
-    actualPage = animation.pages[PageIndex];
-    actualCurve = animation.pages[PageIndex].curves[actualCurveIndex];
-    console.log(animation);
+    curvesLogic.addNewCurve(data.animation.pages[data.PageIndex].curves);
+    data.actualPage = data.animation.pages[data.PageIndex];
+    data.actualCurve = data.animation.pages[data.PageIndex].curves[data.actualCurveIndex];
+    console.log(data.animation);
 }
 initialize();
+
+function updateCanvas() {
+    drawingLogic.updateCanvas(data.actualPage.curves, ctx, canvasWidth, canvasHeight);
+}
 
 canvas.addEventListener('click', (event) => {
     console.log("actualCurveIndex", curvesLogic.actualCurveIndex);
@@ -42,16 +30,34 @@ canvas.addEventListener('click', (event) => {
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
     console.log({x, y});
-    curvesLogic.addPointsToCurve(actualCurve, {"xcord": Math.floor(x), "ycord": Math.floor(y)});
-
-    drawingLogic.updateCanvas(actualPage.curves, ctx, canvasWidth, canvasHeight);
+    curvesLogic.addPointsToCurve(data.actualCurve, {"xcord": Math.floor(x), "ycord": Math.floor(y)});
+    updateCanvas();
 });
 
 
 
+// curve Logic for buttons
+function addNewCurve() {
+    curvesLogic.addNewCurve(data.actualPage.curves);
+    console.log(data.animation);
+}
+document.getElementById("addNewCurve").addEventListener("click", addNewCurve);
 
+function moveCurveRight() {
+    curvesLogic.moveCurveRight();
+}
+document.getElementById("moveCurveRight").addEventListener("click", moveCurveRight);
 
+function moveCurveLeft() {
+    curvesLogic.moveCurveLeft();
+}
+document.getElementById("moveCurveLeft").addEventListener("click", moveCurveLeft);
 
+function CurveUndo() {
+    curvesLogic.CurveUndo(data.actualCurve);
+    updateCanvas();
+}
+document.getElementById("CurveUndo").addEventListener("click", CurveUndo);
 
 
 

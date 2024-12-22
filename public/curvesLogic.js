@@ -1,5 +1,5 @@
 import pageLogic from './pagesLogic.js';
-import data from './script.js';
+import data from './animationData.js';
 
 
 function createNewCurve(r, g, b, a, width) {
@@ -32,17 +32,32 @@ function addPointsToCurve(curve, point) {
     curve.points.push(point);
 }
 
-
-function moveCurveRight(params) {
-    // to do
+function updateActualCurve() {
+    data.actualCurve = data.actualPage.curves[data.actualCurveIndex];
 }
 
-function moveCurveLeft(params) {
-    // to do
+function moveCurveRight() {
+    if(data.actualCurveIndex === data.actualPage.curves.length - 1) {
+        console.log("jestes juz na ostatniej krzywej");
+        return;
+    }
+
+    data.actualCurveIndex++;
+    updateActualCurve();
 }
 
-function CurveUndo(params) {
-    // to do
+function moveCurveLeft() {
+    if(data.actualCurveIndex === 0) {
+        console.log("jestes juz na pierwszej krzywej");
+        return;
+    }
+
+    data.actualCurveIndex--;
+    updateActualCurve();
+}
+
+function CurveUndo(curve) {
+    curve.points.pop();
 }
 
 export default {

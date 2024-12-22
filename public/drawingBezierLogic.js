@@ -1,4 +1,3 @@
-
 function binomialCoefficient(n) {
     var array = [[1]];
     for (let i = 1; i <= n; i++) {

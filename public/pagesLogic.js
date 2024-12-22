@@ -1,36 +1,4 @@
-/*
-
-Animation {
-    "Pages": Page[],
-    "PreviewImage": Img,
-    "ID": id
-}
-
-Page {
-    "Curves": Curve[]
-}
-
-Curve {
-    "settings" : {
-        "r": ,
-        "g": ,
-        "b": ,
-        "a": ,
-        "width": 
-    },
-
-    "points": [
-        {
-            "xcord": ,
-            "ycord": 
-        }
-    ]
-
-}
-
-
-*/
-import data from './script.js';
+import data from './animationData.js';
 
 function createNewPage() {
     return {
@@ -49,10 +17,6 @@ function movePageRight(params) {
 function movePageLeft(params) {
     // to do
 }
-
-//document.getElementById("settingsForm").addEventListener("submit", async function(event) {
-//to do
-
 
 export default {
     addNewPage,

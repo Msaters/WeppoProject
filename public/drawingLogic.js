@@ -7,6 +7,9 @@ function drawPoint(x, y, r, g, b, ctx) {
 }
 
 function drawCurve(arr, ctx, doIDrawPoints) {
+    if(arr.length === 0) 
+        return;
+
     // dodaj punkty
     if(doIDrawPoints)
         for(let i = 0; i < arr.length; i++) {
@@ -28,11 +31,13 @@ function drawCurve(arr, ctx, doIDrawPoints) {
     ctx.stroke();
 }
 
-function updateCanvas(array, ctx, canvasWidth, canvasHeight) {
-    console.log("clearing canvas");
+function clearCanvas(ctx, canvasWidth, canvasHeight){
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+}
+
+function updateCanvas(array, ctx, canvasWidth, canvasHeight) {
+    clearCanvas(ctx, canvasWidth, canvasHeight);
     for (let index = 0; index < array.length; index++) {
-        console.log("drawing curve: ", array[index]);
         drawCurve(array[index].points, ctx, true);   
     }
 }

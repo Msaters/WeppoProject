@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Click Coordinates</title>
     <link rel="stylesheet" href="style.css">
+    <script type="module" src="script.js" defer></script>
 </head>
 <body>
     <header>
@@ -13,10 +14,10 @@
 
         <div id ="CurveSteer">
             <h2>Curve Steering</h2>
-            <button onclick="addNewCurve()"> + </button>
-            <button onclick="moveCurveRight()">right</button>
-            <button onclick="moveCurveLeft()">left</button>
-            <button onclick="CurveUndo()">undo</button>
+            <button id="addNewCurve"> + </button>
+            <button id="moveCurveLeft">left</button>
+            <button id="moveCurveRight">right</button>
+            <button id="CurveUndo">undo</button>
         </div>
 
         <!-- The Modal -->
@@ -32,7 +33,6 @@
     
     <main>
         <canvas id="canvas"></canvas>
-        <script type="module" src="script.js" defer></script>
     </main>
 
     <footer>
