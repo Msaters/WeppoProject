@@ -149,17 +149,11 @@ document.getElementById("toggleInput").addEventListener("click", () => {
 
 
 
-
-
-
-
-
-// zczytywanie z modala
+// modal
 var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
 var modal_content  = document.getElementById("myModalContet");
 
-// When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
     if (event.target == modal) {
       modal.style.display = "none";
@@ -167,17 +161,33 @@ window.onclick = function(event) {
 }
 
 function popUpModal(ID) {
-    console.log("poping Modal")
     modal.style.display = "block";
     modal_content.innerHTML = 
         `<span class="close">&times;</span>
         <p id="textInModal">Twoje id: ` + ID.ID + `</p>`;
 }
 
-// When the user clicks on <span> (x), close the modal
 span.onclick = function() {
     modal.style.display = "none";
 }
+
+// animation
+document.getElementById("showAnimation").addEventListener("click", () => {
+    modal.style.display = "block";
+    modal_content.innerHTML = 
+        `<span class="close">&times;</span>
+        <div class="form-group" style="width: 35%">
+            <label for="delay">Przerwa pomiedzy animacjami w milisekundach</label>
+            <input type="number" id="delay" name="delay" min=5 max=5000 value=400 required><br>
+        </div>
+        <button id="start">start</button>`;
+
+    document.getElementById("start").addEventListener("click", () => {
+        const delay = document.getElementById("delay").value;
+        drawingLogic.showAnimation(data.animation, ctx, canvasWidth, canvasHeight, delay);
+        modal.style.display = "none";
+    });
+});
 
 async function saveCordinates() {
     try {

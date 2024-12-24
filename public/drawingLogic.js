@@ -36,16 +36,52 @@ function clearCanvas(ctx, canvasWidth, canvasHeight){
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 }
 
-function updateCanvas(array, ctx, canvasWidth, canvasHeight) {
+function updateCanvas(curves, ctx, canvasWidth, canvasHeight) {
     clearCanvas(ctx, canvasWidth, canvasHeight);
-    for (let index = 0; index < array.length; index++) {
-        //console.log(array[index]);
-        let curve = array[index];
+    for (let index = 0; index < curves.length; index++) {
+        let curve = curves[index];
         let settings = curve.settings;
         drawCurve(curve.points, ctx, data.pointsVisibility, settings.r, settings.g, settings.b, settings.a, settings.lineWidth, settings.pointWidth, settings.pointHeight);   
     }
 }
 
+let uiElementsDisplayValues;
+function showNextAnimation(pages, ctx, canvasWidth, canvasHeight, delay) {
+    setTimeout(() => {
+        if (pages.length === 0) {
+            //finished make ui visible
+            const uiElements = document.getElementsByClassName("visible");
+            for (let index = 0; index < uiElements.length; index++) {
+                const element = uiElements[index];
+                element.style.display = uiElementsDisplayValues[index];
+            }
+        } else {
+            updateCanvas(pages[0].curves, ctx, canvasWidth, canvasHeight);
+            pages.shift();
+            showNextAnimation(pages, ctx, canvasWidth, canvasHeight, delay);
+        }
+    }, delay);
+}
+
+function showAnimation(animation, ctx, canvasWidth, canvasHeight, delay) {
+    // firstly make ui not visible
+    uiElementsDisplayValues = []; // save display values for later
+    const uiElements = document.getElementsByClassName("visible");
+    for (let index = 0; index < uiElements.length; index++) {
+        const element = uiElements[index];
+        const computedStyleDisplay = window.getComputedStyle(element).display;
+        uiElementsDisplayValues.push(computedStyleDisplay);
+        console.log("style:", computedStyleDisplay);
+        element.style.display = "none";
+    }
+
+    const pages = JSON.parse(JSON.stringify(animation.pages));
+    updateCanvas(pages[0].curves, ctx, canvasWidth, canvasHeight);
+    pages.shift();
+    showNextAnimation(pages, ctx, canvasWidth, canvasHeight, delay);
+}
+
 export default {
-    updateCanvas
+    updateCanvas,
+    showAnimation
 }

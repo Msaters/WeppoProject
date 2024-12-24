@@ -9,15 +9,21 @@
 </head>
 <body>
     <header>
-        <button onclick="saveCordinates()">Save</button>
-        <button onclick="getCordinates()">Open</button>
+        <div class="visible">
+            <button onclick="saveCordinates()">Save</button>
+            <button onclick="getCordinates()">Open</button>
+        </div>
 
-        <div id ="CurveSteer">
+        <div id ="CurveSteer" class="visible">
             <h2>Curve Steering</h2>
             <button id="addNewCurve"> + </button>
             <button id="moveCurveLeft">left</button>
             <button id="moveCurveRight">right</button>
             <button id="CurveUndo">undo</button>
+        </div>
+
+        <div id="navigation" class="visible">
+            <button id="showAnimation">animate</button>
         </div>
 
         <!-- The Modal -->
@@ -32,17 +38,18 @@
     </header>
     
     <main>
+         <!-- to do dodac na ktorej krzywej jestem i na ktorym pagu -->
         <canvas id="canvas"></canvas>
     </main>
 
     <footer>
-        <div id="pageSteer">
+        <div id="pageSteer" class="visible">
             <button id="addNewPage"> + </button>
             <button id="movePageLeft">left</button>
             <button id="movePageRight">right</button>
         </div>
 
-        <div id="settings" class="form-container">
+        <div id="settings" class="form-container visible">
             <form id="settingsForm" class="form-container">
                 <div class="form-group">
                     <label for="R">R:</label>
