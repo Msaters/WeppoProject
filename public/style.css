@@ -28,7 +28,7 @@ footer {
 
 #dragSettings {
   display: flex;
-  gap: 1vw;
+  gap: 0.5vw;
 }
 
 #dragSettingsNav {
@@ -41,6 +41,7 @@ footer {
   justify-content: space-between;
 }
 
+
 #headerOptions {
   display: flex;
   justify-content: space-between;
@@ -52,7 +53,7 @@ footer {
     top: 1vh;
     display: flex;
     flex-direction: row; /* Układa elementy w wierszu */
-    gap: 1.5vw; /* Odstęp między elementami */
+    gap: 3vw; /* Odstęp między elementami */
 }
 
 .pageSettingsButton {
@@ -79,7 +80,12 @@ footer {
 #CurveSteer {
   position: absolute;
   top: 0%; /* Dostosuj według potrzeb */
-  left: 30vw; /* Dostosuj według potrzeb */
+  left: 25vw; /* Dostosuj według potrzeb */
+}
+
+#pageSettingsNav {
+  position: relative;
+  bottom: 2vh;
 }
 
 main {
