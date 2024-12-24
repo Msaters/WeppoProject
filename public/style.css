@@ -13,6 +13,13 @@ footer {
     right: 2%;
 }
 
+#navigation {
+  position: absolute;
+  top:  0.75%;
+  right: 5%;
+}
+
+
 .form-container {
   display: flex;
   flex-direction: row; /* Układa elementy w wierszu */

@@ -14,7 +14,8 @@ function addNewPage() {
 
 function updateActualPage() {
     data.actualPage = data.animation.pages[data.PageIndex];
-    curvesLogic.addNewCurve(data.animation.pages[data.PageIndex].curves);
+    if(data.animation.pages[data.PageIndex].curves.length === 0)
+        curvesLogic.addNewCurve(data.animation.pages[data.PageIndex].curves);
     data.actualCurveIndex = data.actualPage.curveIndex;
     data.actualCurve = data.actualPage.curves[data.actualCurveIndex];
 }
