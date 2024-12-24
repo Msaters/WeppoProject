@@ -9,21 +9,65 @@
 </head>
 <body>
     <header>
-        <div class="visible">
-            <button onclick="saveCordinates()">Save</button>
-            <button onclick="getCordinates()">Open</button>
-        </div>
+        <div id="headerOptions">
+            <div class="visible">
+                <button onclick="saveCordinates()">Save</button>
+                <button onclick="getCordinates()">Open</button>
+            </div>
 
-        <div id ="CurveSteer" class="visible">
-            <h2>Curve Steering</h2>
-            <button id="addNewCurve"> + </button>
-            <button id="moveCurveLeft">left</button>
-            <button id="moveCurveRight">right</button>
-            <button id="CurveUndo">undo</button>
-        </div>
+            <div>
+                <p>siema</p>
+            </div>
+            <div id="CurveSteer" class="visible">
+                <h2>Curve Steering</h2>
+                <button id="addNewCurve"> + </button>
+                <button id="moveCurveLeft">left</button>
+                <button id="moveCurveRight">right</button>
+                <button id="CurveUndo">undo</button>
+                <button id="curveShowActive">show</button>
+            </div>
 
-        <div id="navigation" class="visible">
-            <button id="showAnimation">animate</button>
+            <div id="pageSettings" class="visible">
+                <div class="column-group" id="pageSettingsNav">
+                    <h3>Page Options</h3>
+                    <div id="pageSettingsContent">
+                        <div class="column-group">
+                            <button id="copyPage" class="pageSettingsButton"> clear </button>
+                        </div>
+                        <div class="column-group">
+                            <button id="copyPage" class="pageSettingsButton"> copy </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="column-group" id="dragSettingsNav">
+                    <div>
+                        <h3>Drag Options</h3>
+                    </div>
+                    <div id="dragSettings">
+                        <div class="column-group">
+                            <label for="togglePageSettingBrak">brak</label>
+                            <input type="checkbox" id="togglePageSettingBrak">
+                        </div>
+                        <div class="column-group">
+                            <label for="togglePageSettingPunkt">punkt</label>
+                            <input type="checkbox" id="togglePageSettingPunkt">
+                        </div>
+                        <div class="column-group">
+                            <label for="togglePageSettingCurve">curve</label>
+                            <input type="checkbox" id="togglePageSettingCurve">
+                        </div>
+                        <div class="column-group">
+                            <label for="togglePageSettingPage">page</label>
+                            <input type="checkbox" id="togglePageSettingPage">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="navigation" class="visible">
+                <button id="showAnimation">animate</button>
+            </div>
         </div>
 
         <!-- The Modal -->
@@ -39,50 +83,64 @@
     
     <main>
          <!-- to do dodac na ktorej krzywej jestem i na ktorym pagu -->
-        <canvas id="canvas"></canvas>
+        <div class="column-group">
+            <div id="divCounter" class="visible">
+                <div class="column-group" style="position: relative;">
+                    <p class="counterLabel">curve</p>
+                    <p id="curvesCounter">1/1</p>   
+                </div>
+                <div style="position: relative;">
+                    <p class="counterLabel">page</p>
+                    <p id="pagesCounter">1/1</p>
+                </div>
+            </div>
+            <canvas id="canvas"></canvas>
+        </div>
     </main>
 
     <footer>
-        <div id="pageSteer" class="visible">
-            <button id="addNewPage"> + </button>
-            <button id="movePageLeft">left</button>
-            <button id="movePageRight">right</button>
-        </div>
-
+        <div class="column-group" id="pageSteeringContent">
+            <h3>Page Steering</h3>
+            <div id="pageSteer" class="visible">
+                <button id="addNewPage"> + </button>
+                <button id="movePageLeft">left</button>
+                <button id="movePageRight">right</button>
+            </div>
+         </div>
         <div id="settings" class="form-container visible">
             <form id="settingsForm" class="form-container">
-                <div class="form-group">
+                <div class="column-group">
                     <label for="R">R:</label>
                     <input type="number" id="R" name="R" min="0" max="255" required>
                 </div>
-                <div class="form-group">
+                <div class="column-group">
                     <label for="G">G:</label>
                     <input type="number" id="G" name="G" min="0" max="255" required>
                 </div>
-                <div class="form-group">
+                <div class="column-group">
                     <label for="B">B:</label>
                     <input type="number" id="B" name="B" min="0" max="255" required>
                 </div>
-                <div class="form-group">
+                <div class="column-group">
                     <label for="A">A:</label>
                     <input type="number" id="A" name="A" min="0" max="1" step="0.01" required>
                 </div>
-                <div class="form-group">
+                <div class="column-group">
                     <label for="LineWidth">LineWidth:</label>
                     <input type="number" id="LineWidth" name="LineWidth" min="1" max="255" required>
                 </div>
-                <div class="form-group">
+                <div class="column-group">
                     <label for="PointWidth">PointWidth:</label>
                     <input type="number" id="PointWidth" name="PointWidth" min="1" max="255">
                 </div>
-                <div class="form-group">
+                <div class="column-group">
                     <label for="PointHeight">PointHeight:</label>
                     <input type="number" id="PointHeight" name="PointHeight" min="1" max="255">
                 </div>
                 <button type="submit">zapisz</button>
             </form>
             <button id="reset">reset</button>
-            <div class="form-group">
+            <div class="column-group">
                 <label for="toggleInput">Pokaz Punkty:</label>
                 <input type="checkbox" id="toggleInput">
             </div>
