@@ -176,7 +176,7 @@ document.getElementById("showAnimation").addEventListener("click", () => {
     modal.style.display = "block";
     modal_content.innerHTML = 
         `<span class="close">&times;</span>
-        <div class="form-group" style="width: 35%">
+        <div class="column-group" style="width: 35%">
             <label for="delay">Przerwa pomiedzy animacjami w milisekundach</label>
             <input type="number" id="delay" name="delay" min=5 max=5000 value=400 required><br>
         </div>
@@ -208,7 +208,6 @@ async function saveCordinates() {
         console.error('Błąd sieci:', error);
     }
 }
-
 
 
 function pupUpModalForm() {
