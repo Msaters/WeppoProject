@@ -13,7 +13,6 @@ const ctx = canvas.getContext("2d");
 const initialize = () => {
     data.pointsVisibility = true;
     pageLogic.addNewPage(); 
-    curvesLogic.addNewCurve(data.animation.pages[data.PageIndex].curves);
     data.actualPage = data.animation.pages[data.PageIndex];
     data.actualCurve = data.animation.pages[data.PageIndex].curves[data.actualCurveIndex];
 }
@@ -34,6 +33,7 @@ canvas.addEventListener('click', (event) => {
 
 // curve Logic for buttons
 function addNewCurve() {
+    console.log("dodajemy w script");
     curvesLogic.addNewCurve(data.actualPage.curves);
 }
 document.getElementById("addNewCurve").addEventListener("click", addNewCurve);
@@ -62,7 +62,6 @@ document.getElementById("addNewPage").addEventListener("click", addNewPage);
 
 const movePageRight = () => {
     pageLogic.movePageRight();
-    console.log(data.animation);
     updateCanvas();
 }
 document.getElementById("movePageRight").addEventListener("click", movePageRight);
@@ -139,13 +138,36 @@ document.getElementById("toggleInput").addEventListener("click", () => {
 });
 
 
+//updating counters 
+export function updatePageCounter() {
+    document.getElementById("pagesCounter").innerHTML = 
+    `${data.PageIndex + 1}/${data.animation.pages.length}`;
+}
 
+export function updateCurveCounter() {
+    console.log(data.animation);
+    document.getElementById("curvesCounter").innerHTML = 
+    `${data.actualCurveIndex + 1}/${data.actualPage.curves.length}`;
+}
 
+//page options functions
+function clearPage() {
+    pageLogic.clearPage();
+    updateCanvas();
+}
+document.getElementById("clearPage").addEventListener("click", clearPage);
 
+document.getElementById("copyPage").addEventListener("click", () => {
 
+});
 
-
-
+function deletePage() {
+    console.log("przed",data.animation);
+    pageLogic.deletePage();
+    console.log("po",data.animation);
+    updateCanvas();
+}
+document.getElementById("deletePage").addEventListener("click", deletePage);
 
 
 

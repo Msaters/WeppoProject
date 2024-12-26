@@ -1,5 +1,6 @@
 import pageLogic from './pagesLogic.js';
 import data from './animationData.js';
+import { updateCurveCounter } from './script.js';
 
 
 function createNewCurve(r, g, b, a, width, pointWidth, pointHeight) {
@@ -26,6 +27,7 @@ function addNewCurve(curves) {
     curves.push(
         createNewDefaultCurve()
     )
+    updateCurveCounter();
 }
 
 // adding points to actual Curve
@@ -36,6 +38,7 @@ function addPointsToCurve(curve, point) {
 function updateActualCurve() {
     data.actualCurve = data.actualPage.curves[data.actualCurveIndex];
     data.actualPage.curveIndex = data.actualCurveIndex;
+    updateCurveCounter();
 }
 
 function moveCurveRight() {

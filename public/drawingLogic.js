@@ -1,9 +1,11 @@
 import { createPointsWithDeCastlejau } from "/drawingBezierLogic.js";
 import data from './animationData.js';
 
-function drawPoint(x, y, r, g, b, ctx, pointWidth, pointHeight) {
+function drawPoint(centerX, centerY, r, g, b, ctx, pointWidth, pointHeight) {
     // to do, dodac kolorki 
     ctx.fillStyle = `rgb(${r}, ${g}, ${b}`;
+    const x = centerX - pointWidth / 2; 
+    const y = centerY - pointHeight / 2; 
     ctx.fillRect(x, y, pointWidth, pointHeight);
 }
 
@@ -71,7 +73,6 @@ function showAnimation(animation, ctx, canvasWidth, canvasHeight, delay) {
         const element = uiElements[index];
         const computedStyleDisplay = window.getComputedStyle(element).display;
         uiElementsDisplayValues.push(computedStyleDisplay);
-        console.log("style:", computedStyleDisplay);
         element.style.display = "none";
     }
 
