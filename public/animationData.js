@@ -4,6 +4,7 @@ var actualCurveIndex = 0;
 var actualPage;
 var actualCurve;
 var pointsVisibility;
+var isActiveHighlighted = false;
 var animation = {
     type: "animation",
     pages: [],
@@ -17,5 +18,6 @@ export default {
     PageIndex,
     actualCurve,
     actualPage,
-    pointsVisibility
+    pointsVisibility,
+    isActiveHighlighted
 }

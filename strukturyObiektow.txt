@@ -7,24 +7,24 @@ Animation {
 }
 
 Page {
-    "curves": Curve[]
+    "curves": [],
+    "curveIndex": 0,
 }
 
 Curve {
-    "settings" : {
-        "r": ,
-        "g": ,
-        "b": ,
-        "a": ,
-        "width": 
+    type: "Curve",
+
+    settings: {
+        r: r,
+        g: g,
+        b: b,
+        a: a,
+        lineWidth: width,
+        pointWidth: pointWidth,
+        pointHeight: pointHeight
     },
 
-    "points": [
-        {
-            "xcord": ,
-            "ycord": 
-        }
-    ]
+    points: []
 
 }
 

@@ -9,14 +9,26 @@ function drawPoint(centerX, centerY, r, g, b, ctx, pointWidth, pointHeight) {
     ctx.fillRect(x, y, pointWidth, pointHeight);
 }
 
-function drawCurve(arr, ctx, doIDrawPoints, r, g, b, a, lineWidth, pointWidth, pointHeight) {
+function drawCurve(arr, ctx, doIDrawPoints, r, g, b, a, lineWidth, pointWidth, pointHeight, isActive) {
     if(arr.length === 0) 
         return;
+
+    //highlight rgb if isActive
+    const increase = 50;
+    if(isActive) {
+        r = Math.min(255, r + increase);
+        g = Math.min(255, g + increase);
+        b = Math.min(255, b + increase);
+        a = Math.min(1, a + 0.1);
+    }
 
     // dodaj punkty
     if(doIDrawPoints)
         for(let i = 0; i < arr.length; i++) {
-            drawPoint(arr[i].xcord, arr[i].ycord, 0, 26, 0, ctx, pointWidth, pointHeight);
+            if(isActive)
+                drawPoint(arr[i].xcord, arr[i].ycord, 0 + increase, 26 + increase, 0 + increase, ctx, pointWidth, pointHeight);
+            else
+                drawPoint(arr[i].xcord, arr[i].ycord, 0, 26, 0, ctx, pointWidth, pointHeight);
         }
 
     //dodaj linie
@@ -43,7 +55,10 @@ function updateCanvas(curves, ctx, canvasWidth, canvasHeight) {
     for (let index = 0; index < curves.length; index++) {
         let curve = curves[index];
         let settings = curve.settings;
-        drawCurve(curve.points, ctx, data.pointsVisibility, settings.r, settings.g, settings.b, settings.a, settings.lineWidth, settings.pointWidth, settings.pointHeight);   
+        if(index === data.actualCurveIndex && data.isActiveHighlighted)
+            drawCurve(curve.points, ctx, data.pointsVisibility, settings.r, settings.g, settings.b, settings.a, settings.lineWidth, settings.pointWidth, settings.pointHeight, true);   
+        else
+            drawCurve(curve.points, ctx, data.pointsVisibility, settings.r, settings.g, settings.b, settings.a, settings.lineWidth, settings.pointWidth, settings.pointHeight, false);   
     }
 }
 
