@@ -2,6 +2,7 @@ import curvesLogic from './curvesLogic.js';
 import drawingLogic from './drawingLogic.js';
 import pageLogic from './pagesLogic.js';
 import data from './animationData.js';
+import pagesLogic from './pagesLogic.js';
 
 const canvas = document.getElementById('canvas');
 canvas.width = canvas.offsetWidth; // Ustawienie na szerokość elementu w pikselach
@@ -40,11 +41,13 @@ document.getElementById("addNewCurve").addEventListener("click", addNewCurve);
 
 function moveCurveRight() {
     curvesLogic.moveCurveRight();
+    updateCanvas();
 }
 document.getElementById("moveCurveRight").addEventListener("click", moveCurveRight);
 
 function moveCurveLeft() {
     curvesLogic.moveCurveLeft();
+    updateCanvas();
 }
 document.getElementById("moveCurveLeft").addEventListener("click", moveCurveLeft);
 
@@ -53,6 +56,12 @@ function CurveUndo() {
     updateCanvas();
 }
 document.getElementById("CurveUndo").addEventListener("click", CurveUndo);
+
+function showActiveCurve() {
+    data.isActiveHighlighted = document.getElementById("showActiveCurve").checked;
+    updateCanvas();
+}
+document.getElementById("showActiveCurve").addEventListener("click", showActiveCurve);
 
 // pages logic buttons
 function addNewPage() {
@@ -157,9 +166,34 @@ function clearPage() {
 }
 document.getElementById("clearPage").addEventListener("click", clearPage);
 
-document.getElementById("copyPage").addEventListener("click", () => {
+function copyPage() {
+    modal.style.display = "block";
+    modal_content.innerHTML = 
+        `<span class="close">&times;</span>
+        <form id="copyPageForm" class="form-container column-group">
+            <div style="display:flex; justify-content: space-evenly;">
+                <div class="column-group">
+                    <label for="fromCopy">from</label>
+                    <input type="number" id="fromCopy" name="fromCopy" min=1 max=${data.animation.pages.length} required style="width:20vw;">
+                </div>
+                <div class="column-group">
+                    <label for="toCopy">to</label>
+                    <input type="number" id="toCopy" name="toCopy" min=1 max=${data.animation.pages.length} value=${data.PageIndex + 1} required style="width:20vw;">
+                </div>
+            </div>
+            <button type="submit" style="width: 10vw; margin: auto;">copy</button>
+        </form>`;
 
-});
+    document.getElementById("copyPageForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
+        const indexFrom = document.getElementById("fromCopy").value;
+        const indexTo = document.getElementById("toCopy").value;
+        pagesLogic.copyPage(indexFrom - 1, indexTo - 1);
+        modal.style.display = "none";
+        updateCanvas();
+    });
+}
+document.getElementById("copyPage").addEventListener("click", copyPage);
 
 function deletePage() {
     console.log("przed",data.animation);

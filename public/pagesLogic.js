@@ -49,9 +49,12 @@ function clearPage() {
 
 }
 
-function copyPage(index1, index2) {
-    // to do hard copy
+function copyPage(indexFrom, indexTo) {
+    data.animation.pages[indexTo] = JSON.parse(JSON.stringify(data.animation.pages[indexFrom]));
+    data.animation.pages[indexTo].curveIndex = 0;
+    updateActualPage();
 }
+
 
 function deletePage(index) {
     if(data.animation.pages.length === 1) {

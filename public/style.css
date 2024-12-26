@@ -83,6 +83,11 @@ footer {
   left: 25vw; /* Dostosuj według potrzeb */
 }
 
+#showActiveCurveDiv {
+  position: relative;
+  bottom: 1.70vh;
+}
+
 #pageSettingsNav {
   position: relative;
   bottom: 2vh;
