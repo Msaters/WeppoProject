@@ -5,6 +5,16 @@ var actualPage;
 var actualCurve;
 var pointsVisibility;
 var isActiveHighlighted = false;
+var dragRange = 10;
+
+const dragOptionEnum = {
+    NONE: "none",
+    POINT: "point",
+    CURVE: "curve",
+    PAGE: "page"
+};
+var dragOption = dragOptionEnum.NONE;
+
 var animation = {
     type: "animation",
     pages: [],
@@ -19,5 +29,8 @@ export default {
     actualCurve,
     actualPage,
     pointsVisibility,
-    isActiveHighlighted
+    isActiveHighlighted,
+    dragOption,
+    dragOptionEnum,
+    dragRange
 }

@@ -65,11 +65,22 @@ function CurveUndo(curve) {
     curve.points.pop();
 }
 
+function getAllPointsFromActualPage() {
+    let allPoints = [];
+    for (const curve of data.actualPage.curves) {
+        for (const point of curve.points) {
+            allPoints.push(point);
+        }
+    }``
+    return allPoints;
+}
+
 export default {
     createNewCurve,
     addNewCurve,
     addPointsToCurve,
     moveCurveRight,
     moveCurveLeft,
-    CurveUndo
+    CurveUndo,
+    getAllPointsFromActualPage
 };

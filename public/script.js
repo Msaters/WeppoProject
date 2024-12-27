@@ -23,18 +23,76 @@ function updateCanvas() {
     drawingLogic.updateCanvas(data.actualPage.curves, ctx, canvasWidth, canvasHeight);
 }
 
-canvas.addEventListener('click', (event) => {
+var isClicked = false;
+let startingX;
+let startingY;
+
+// canvas event handlers
+// adding point if none is chosen
+canvas.addEventListener("mousedown", (event) => {
     const rect = canvas.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    curvesLogic.addPointsToCurve(data.actualCurve, {"xcord": Math.floor(x), "ycord": Math.floor(y)});
-    updateCanvas();
+    const x = Math.floor(event.clientX - rect.left);
+    startingX = x;
+    const y = Math.floor(event.clientY - rect.top);
+    startingY = y;
+    isClicked = true;
+
+    if(data.dragOption === data.dragOptionEnum.NONE) {
+        curvesLogic.addPointsToCurve(data.actualCurve, {"xcord": x, "ycord": y});
+        updateCanvas();
+    }
+    
 });
 
+//no more draging elements
+canvas.addEventListener("mouseup", (event) => {
+    isClicked = false;
+});
+
+// handle drag movement
+let isFinishedDrawingAsync = true;
+canvas.addEventListener("mousemove", async (event) => {
+    if(isClicked === false || isFinishedDrawingAsync === false || data.dragOption === data.dragOptionEnum.NONE)
+        return;
+
+    let forAll = document.getElementById("togglePageSettingforAll").checked;
+    const rect = canvas.getBoundingClientRect();
+    const x = Math.floor(event.clientX - rect.left);
+    const y = Math.floor(event.clientY - rect.top);
+    let curve;
+    let points;
+
+    if(!forAll) {
+        curve = data.actualCurve;
+        points = curve.points;
+    }  else {
+        points = curvesLogic.getAllPointsFromActualPage();
+    }
+
+    let drawingPromise = new Promise((resolve) => {
+        isFinishedDrawingAsync = false;
+        switch (data.dragOption) {
+            case data.dragOptionEnum.POINT:
+                drawingLogic.dragPoints(startingX, startingY, x, y, points, data.dragRange , data.dragRange, forAll);
+                break;
+            case data.dragOptionEnum.CURVE:
+
+            default:
+                break;
+        }
+
+        updateCanvas();
+        startingX = x;
+        startingY = y;
+        resolve(true);
+    });
+
+    isFinishedDrawingAsync = await drawingPromise;
+    return;
+});
 
 // curve Logic for buttons
 function addNewCurve() {
-    console.log("dodajemy w script");
     curvesLogic.addNewCurve(data.actualPage.curves);
 }
 document.getElementById("addNewCurve").addEventListener("click", addNewCurve);
@@ -196,13 +254,50 @@ function copyPage() {
 document.getElementById("copyPage").addEventListener("click", copyPage);
 
 function deletePage() {
-    console.log("przed",data.animation);
     pageLogic.deletePage();
-    console.log("po",data.animation);
     updateCanvas();
 }
 document.getElementById("deletePage").addEventListener("click", deletePage);
 
+
+//Drag options
+const radioList = document.getElementsByClassName("radioPageSettings")
+function setRadioValues(target) {
+    console.log(target.id);
+    if(target.checked === false) {
+        data.dragOption = "none";
+        document.getElementById("togglePageSettingNone").checked = true;
+        return;
+    }
+
+    // only one at a time
+    for (const element of radioList) {
+        element.checked = false;
+    }
+    target.checked = true; 
+    
+    // set dragOption
+    switch(target.id) {
+        case "togglePageSettingNone":
+            data.dragOption = data.dragOptionEnum.NONE;
+            break;
+        case "togglePageSettingPoint":
+            data.dragOption = data.dragOptionEnum.POINT;
+            break;
+        case "togglePageSettingCurve":
+            data.dragOption = data.dragOptionEnum.CURVE;
+            break;
+        case "togglePageSettingPage":
+            data.dragOption = data.dragOptionEnum.PAGE;
+            break;
+      }
+}
+
+for (const element of radioList) {
+    element.addEventListener("click", (event) => {
+        setRadioValues(event.target);
+    });
+}
 
 
 // modal
