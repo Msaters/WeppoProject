@@ -6,6 +6,10 @@ body {
   background-color: #888;
 }
 
+h2 {
+  margin-block-end: 0.5em;
+}
+
 footer {
     height: 5vh;
     display: flex;
@@ -33,7 +37,7 @@ footer {
 
 #dragSettingsNav {
   position: relative;
-  bottom: 2.5vh;
+  bottom: 1.5vh;
 }
 
 #pageSettingsContent {
@@ -58,10 +62,6 @@ footer {
     gap: 3vw; /* Odstęp między elementami */
 }
 
-.pageSettingsButton {
-  margin-top: 0.4vh;
-}
-
 .form-container {
   display: flex;
   flex-direction: row; /* Układa elementy w wierszu */
@@ -82,7 +82,7 @@ footer {
 #CurveSteer {
   position: absolute;
   top: 0%; /* Dostosuj według potrzeb */
-  left: 25vw; /* Dostosuj według potrzeb */
+  left: 17vw; /* Dostosuj według potrzeb */
 }
 
 #showActiveCurveDiv {
@@ -92,7 +92,7 @@ footer {
 
 #showPreviousPageDiv {
   position: relative;
-  bottom: 0.5vh;
+  bottom: 0.7vh;
 }
 
 #pageSettingsNav {
@@ -113,7 +113,7 @@ main {
     background-color: #a7a1a1;
     border: 1px solid black;
     width: 90vw;
-    height: 75vh;
+    height: 78vh;
     position: relative;
     top: 0px;
 }

@@ -14,7 +14,7 @@
                 <button onclick="saveCordinates()">Save</button>
                 <button onclick="getCordinates()">Open</button>
             </div>
-
+                <p></p>
             <div>
                 
             </div>
@@ -35,7 +35,7 @@
 
             <div id="pageSettings" class="visible">
                 <div class="column-group" id="pageSettingsNav">
-                    <h3>Page Options</h3>
+                    <h2>Page Options</h2>
                     <div id="pageSettingsContent">
                         <button id="clearPage" class="pageSettingsButton">clear</button>
                         <button id="copyPage" class="pageSettingsButton">copy</button>
@@ -46,31 +46,32 @@
                         </div>
                     </div>
                 </div>
-                <div class="column-group" id="dragSettingsNav">
-                    <div>
-                        <h3>Drag Options</h3>
+            </div>
+
+            <div class="column-group" id="dragSettingsNav">
+                <div>
+                    <h2>Drag Options</h2>
+                </div>
+                <div id="dragSettings">
+                    <div class="column-group">
+                        <label for="togglePageSettingNone">none</label>
+                        <input type="checkbox" id="togglePageSettingNone" class="radioPageSettings" checked="true">
                     </div>
-                    <div id="dragSettings">
-                        <div class="column-group">
-                            <label for="togglePageSettingNone">none</label>
-                            <input type="checkbox" id="togglePageSettingNone" class="radioPageSettings" checked="true">
-                        </div>
-                        <div class="column-group">
-                            <label for="togglePageSettingPoint">point</label>
-                            <input type="checkbox" id="togglePageSettingPoint" class="radioPageSettings">
-                        </div>
-                        <div class="column-group">
-                            <label for="togglePageSettingCurve">curve</label>
-                            <input type="checkbox" id="togglePageSettingCurve" class="radioPageSettings">
-                        </div>
-                        <div class="column-group">
-                            <label for="togglePageSettingPage">page</label>
-                            <input type="checkbox" id="togglePageSettingPage" class="radioPageSettings">
-                        </div>
-                        <div class="column-group">
-                            <label for="togglePageSettingforAll">forall</label>
-                            <input type="checkbox" id="togglePageSettingforAll">
-                        </div>
+                    <div class="column-group">
+                        <label for="togglePageSettingPoint">point</label>
+                        <input type="checkbox" id="togglePageSettingPoint" class="radioPageSettings">
+                    </div>
+                    <div class="column-group">
+                        <label for="togglePageSettingCurve">curve</label>
+                        <input type="checkbox" id="togglePageSettingCurve" class="radioPageSettings">
+                    </div>
+                    <div class="column-group">
+                        <label for="togglePageSettingPage">page</label>
+                        <input type="checkbox" id="togglePageSettingPage" class="radioPageSettings">
+                    </div>
+                    <div class="column-group">
+                        <label for="togglePageSettingforAll">forall</label>
+                        <input type="checkbox" id="togglePageSettingforAll">
                     </div>
                 </div>
             </div>
@@ -150,7 +151,7 @@
                     <label for="PointHeight">PointHeight:</label>
                     <input type="number" id="PointHeight" name="PointHeight" min="1" max="255">
                 </div>
-                <button type="submit">zapisz</button>
+                <button type="submit">save</button>
             </form>
             <button id="reset">reset</button>
             <div class="column-group">

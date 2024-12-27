@@ -50,8 +50,21 @@ function clearCanvas(ctx, canvasWidth, canvasHeight){
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 }
 
+function updateCanvasWithPreviousPage(curves, ctx) {
+    for (let index = 0; index < curves.length; index++) {
+        let curve = curves[index];
+        let settings = curve.settings;
+        drawCurve(curve.points, ctx, false, settings.r, settings.g, settings.b, settings.a / 2, settings.lineWidth, settings.pointWidth, settings.pointHeight, false);  
+    }
+}
+
 function updateCanvas(curves, ctx, canvasWidth, canvasHeight) {
     clearCanvas(ctx, canvasWidth, canvasHeight);
+
+    if(data.isShowingPreviousPage && data.PageIndex !== 0) {
+        updateCanvasWithPreviousPage(data.animation.pages[data.PageIndex - 1].curves, ctx);
+    }
+
     for (let index = 0; index < curves.length; index++) {
         let curve = curves[index];
         let settings = curve.settings;
