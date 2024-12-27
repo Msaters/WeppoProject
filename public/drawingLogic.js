@@ -97,7 +97,30 @@ function showAnimation(animation, ctx, canvasWidth, canvasHeight, delay) {
     showNextAnimation(pages, ctx, canvasWidth, canvasHeight, delay);
 }
 
+function dragPoints(startingX, startingY, endingX, endingY, array, pointWidth, pointHeight, areGlued) {
+    let points = [];
+    array.forEach(element => {
+        if(Math.abs(element.xcord - startingX) <= pointWidth && Math.abs(element.ycord - startingY) <= pointHeight) {
+            points.push(element);
+        }
+    });
+
+    if(points.length !== 0) {
+        if(areGlued)
+            for (let point of points) {
+                point.xcord = endingX;
+                point.ycord = endingY;
+            }
+        else {
+            let point = points[0];
+            point.xcord = endingX;
+            point.ycord = endingY;
+        }
+    }
+}
+
 export default {
     updateCanvas,
-    showAnimation
+    showAnimation,
+    dragPoints
 }

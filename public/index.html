@@ -23,6 +23,7 @@
                 <button id="addNewCurve"> + </button>
                 <button id="moveCurveLeft">left</button>
                 <button id="moveCurveRight">right</button>
+                <button id="curveCopy">copy</button>
                 <button id="CurveUndo">undo</button>
                 <div style="display: inline-block;">
                     <div class="column-group" id="showActiveCurveDiv">
@@ -36,12 +37,8 @@
                 <div class="column-group" id="pageSettingsNav">
                     <h3>Page Options</h3>
                     <div id="pageSettingsContent">
-                        <div class="column-group">
-                            <button id="clearPage" class="pageSettingsButton"> clear </button>
-                        </div>
-                        <div class="column-group">
-                            <button id="copyPage" class="pageSettingsButton"> copy </button>
-                        </div>
+                        <button id="clearPage" class="pageSettingsButton"> clear </button>
+                        <button id="copyPage" class="pageSettingsButton"> copy </button>
                         <button id="deletePage" class="pageSettingsButton"> delete </button>
                     </div>
                 </div>
@@ -51,20 +48,24 @@
                     </div>
                     <div id="dragSettings">
                         <div class="column-group">
-                            <label for="togglePageSettingBrak">brak</label>
-                            <input type="checkbox" id="togglePageSettingBrak">
+                            <label for="togglePageSettingNone">none</label>
+                            <input type="checkbox" id="togglePageSettingNone" class="radioPageSettings" checked="true">
                         </div>
                         <div class="column-group">
-                            <label for="togglePageSettingPunkt">punkt</label>
-                            <input type="checkbox" id="togglePageSettingPunkt">
+                            <label for="togglePageSettingPoint">point</label>
+                            <input type="checkbox" id="togglePageSettingPoint" class="radioPageSettings">
                         </div>
                         <div class="column-group">
                             <label for="togglePageSettingCurve">curve</label>
-                            <input type="checkbox" id="togglePageSettingCurve">
+                            <input type="checkbox" id="togglePageSettingCurve" class="radioPageSettings">
                         </div>
                         <div class="column-group">
                             <label for="togglePageSettingPage">page</label>
-                            <input type="checkbox" id="togglePageSettingPage">
+                            <input type="checkbox" id="togglePageSettingPage" class="radioPageSettings">
+                        </div>
+                        <div class="column-group">
+                            <label for="togglePageSettingforAll">forall</label>
+                            <input type="checkbox" id="togglePageSettingforAll">
                         </div>
                     </div>
                 </div>
