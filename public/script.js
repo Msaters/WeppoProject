@@ -148,6 +148,7 @@ document.getElementById("movePageLeft").addEventListener("click", movePageLeft);
 
 const showPreviousPage = function() {
     data.isShowingPreviousPage = document.getElementById("showPreviousPage").checked;
+    updateCanvas();
 }
 document.getElementById("showPreviousPage").addEventListener("click", showPreviousPage);
 
