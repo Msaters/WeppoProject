@@ -1,6 +1,7 @@
 import pageLogic from './pagesLogic.js';
 import data from './animationData.js';
 import { updateCurveCounter } from './script.js';
+import { createPointsWithDeCastlejau } from "/drawingBezierLogic.js";
 
 
 function createNewCurve(r, g, b, a, width, pointWidth, pointHeight) {
@@ -71,8 +72,68 @@ function getAllPointsFromActualPage() {
         for (const point of curve.points) {
             allPoints.push(point);
         }
-    }``
+    }
     return allPoints;
+}
+
+function getAllCurvesFromActualPage() {
+    let allCurves = [];
+    for (const curve of data.actualPage.curves) {
+        allCurves.push(curve);
+    }
+    return allCurves;
+}
+
+// draging logic
+function isCurveClicked(bezierPoints, startingX, startingY, reachingWidth, reachingHeight) {
+    for (const bezierPoint of bezierPoints) {
+        if(Math.abs(bezierPoint.xcord - startingX) <= reachingWidth && Math.abs(bezierPoint.ycord - startingY) <= reachingHeight) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function movePoints(points, moveX, moveY) {
+    for (const point of points) {
+        point.xcord += moveX;
+        point.ycord += moveY;
+    }
+}
+
+function dragPoints(startingX, startingY, endingX, endingY, array, reachingWidth, reachingHeight) {
+    let points = [];
+    array.forEach(element => {
+        if(Math.abs(element.xcord - startingX) <= reachingWidth && Math.abs(element.ycord - startingY) <= reachingHeight) {
+            points.push(element);
+        }
+    });
+
+    if(points.length !== 0) {
+        /*if(areGlued)
+            for (let point of points) {
+                point.xcord = endingX;
+                point.ycord = endingY;
+            }
+        else {*/
+        let point = points[0];
+        point.xcord = endingX;
+        point.ycord = endingY;
+    }
+}
+
+function dragCurve(startingX, startingY, endingX, endingY, curves, reachingWidth, reachingHeight) {
+    curves.forEach(curve => {
+        let curveBezierPoints = createPointsWithDeCastlejau(100, curve.points);
+        if(isCurveClicked(curveBezierPoints, startingX, startingY, reachingWidth, reachingHeight)) {
+            movePoints(curve.points, endingX - startingX, endingY - startingY);
+        }
+    });
+}
+
+function dragPage(startingX, startingY, endingX, endingY, points) {
+    movePoints(points, endingX - startingX, endingY - startingY);
 }
 
 export default {
@@ -82,5 +143,10 @@ export default {
     moveCurveRight,
     moveCurveLeft,
     CurveUndo,
-    getAllPointsFromActualPage
+    getAllPointsFromActualPage,
+    getAllCurvesFromActualPage,
+    isCurveClicked,
+    dragPoints,
+    dragCurve,
+    dragPage
 };

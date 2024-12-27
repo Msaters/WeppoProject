@@ -5,6 +5,7 @@ var actualPage;
 var actualCurve;
 var pointsVisibility;
 var isActiveHighlighted = false;
+var isShowingPreviousPage = false;
 var dragRange = 10;
 
 const dragOptionEnum = {
@@ -32,5 +33,6 @@ export default {
     isActiveHighlighted,
     dragOption,
     dragOptionEnum,
-    dragRange
+    dragRange,
+    isShowingPreviousPage
 }
