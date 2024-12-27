@@ -33,12 +33,12 @@ function drawCurve(arr, ctx, doIDrawPoints, r, g, b, a, lineWidth, pointWidth, p
 
     //dodaj linie
     let curvePoints = createPointsWithDeCastlejau(1000, arr);
-    ctx.moveTo(Math.floor(curvePoints[0].xcord), Math.floor(curvePoints[0].ycord));
+    ctx.moveTo(curvePoints[0].xcord, curvePoints[0].ycord);
     ctx.beginPath();
 
     for(let i = 0; i < curvePoints.length; i++)
     {
-        ctx.lineTo(Math.floor(curvePoints[i].xcord), Math.floor(curvePoints[i].ycord));
+        ctx.lineTo(curvePoints[i].xcord, curvePoints[i].ycord);
     }
 
     ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${a})`;    
@@ -97,30 +97,8 @@ function showAnimation(animation, ctx, canvasWidth, canvasHeight, delay) {
     showNextAnimation(pages, ctx, canvasWidth, canvasHeight, delay);
 }
 
-function dragPoints(startingX, startingY, endingX, endingY, array, pointWidth, pointHeight, areGlued) {
-    let points = [];
-    array.forEach(element => {
-        if(Math.abs(element.xcord - startingX) <= pointWidth && Math.abs(element.ycord - startingY) <= pointHeight) {
-            points.push(element);
-        }
-    });
-
-    if(points.length !== 0) {
-        if(areGlued)
-            for (let point of points) {
-                point.xcord = endingX;
-                point.ycord = endingY;
-            }
-        else {
-            let point = points[0];
-            point.xcord = endingX;
-            point.ycord = endingY;
-        }
-    }
-}
 
 export default {
     updateCanvas,
-    showAnimation,
-    dragPoints
+    showAnimation
 }

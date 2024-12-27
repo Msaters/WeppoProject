@@ -38,6 +38,8 @@ footer {
 
 #pageSettingsContent {
   display: flex;
+  align-items: center;
+  gap: 0.15vw;
   justify-content: space-between;
 }
 
@@ -86,6 +88,11 @@ footer {
 #showActiveCurveDiv {
   position: relative;
   bottom: 1.70vh;
+}
+
+#showPreviousPageDiv {
+  position: relative;
+  bottom: 0.5vh;
 }
 
 #pageSettingsNav {

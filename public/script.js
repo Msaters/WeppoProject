@@ -60,12 +60,15 @@ canvas.addEventListener("mousemove", async (event) => {
     const x = Math.floor(event.clientX - rect.left);
     const y = Math.floor(event.clientY - rect.top);
     let curve;
+    let curves;
     let points;
 
     if(!forAll) {
+        curves = [data.actualCurve];
         curve = data.actualCurve;
         points = curve.points;
     }  else {
+        curves = curvesLogic.getAllCurvesFromActualPage();
         points = curvesLogic.getAllPointsFromActualPage();
     }
 
@@ -73,11 +76,13 @@ canvas.addEventListener("mousemove", async (event) => {
         isFinishedDrawingAsync = false;
         switch (data.dragOption) {
             case data.dragOptionEnum.POINT:
-                drawingLogic.dragPoints(startingX, startingY, x, y, points, data.dragRange , data.dragRange, forAll);
+                curvesLogic.dragPoints(startingX, startingY, x, y, points, data.dragRange , data.dragRange);
                 break;
             case data.dragOptionEnum.CURVE:
-
-            default:
+                curvesLogic.dragCurve(startingX, startingY, x, y, curves, data.dragRange, data.dragRange);
+                break;
+            case data.dragOptionEnum.PAGE:
+                curvesLogic.dragPage(startingX, startingY, x, y, curvesLogic.getAllPointsFromActualPage());
                 break;
         }
 
@@ -129,15 +134,22 @@ document.getElementById("addNewPage").addEventListener("click", addNewPage);
 
 const movePageRight = () => {
     pageLogic.movePageRight();
+    updateCurveCounter();
     updateCanvas();
 }
 document.getElementById("movePageRight").addEventListener("click", movePageRight);
 
 const movePageLeft = () => {
     pageLogic.movePageLeft();
+    updateCurveCounter();
     updateCanvas();
 }
 document.getElementById("movePageLeft").addEventListener("click", movePageLeft);
+
+const showPreviousPage = function() {
+    data.isShowingPreviousPage = document.getElementById("showPreviousPage").checked;
+}
+document.getElementById("showPreviousPage").addEventListener("click", showPreviousPage);
 
 
 //settings
@@ -213,6 +225,7 @@ export function updatePageCounter() {
 
 export function updateCurveCounter() {
     console.log(data.animation);
+    console.log("actualPage:", data.actualPage, "length:",data.actualPage.curves.length);
     document.getElementById("curvesCounter").innerHTML = 
     `${data.actualCurveIndex + 1}/${data.actualPage.curves.length}`;
 }
@@ -248,6 +261,7 @@ function copyPage() {
         const indexTo = document.getElementById("toCopy").value;
         pagesLogic.copyPage(indexFrom - 1, indexTo - 1);
         modal.style.display = "none";
+        updateCurveCounter();
         updateCanvas();
     });
 }
