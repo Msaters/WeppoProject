@@ -19,7 +19,8 @@ var dragOption = dragOptionEnum.NONE;
 var animation = {
     type: "animation",
     pages: [],
-    ID: 0,
+    // ID: 0,
+    // authKey: ,
     //PreviewImg: Img
 }
 

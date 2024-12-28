@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { v4: uuidv4 } = require('uuid');
 
 const Schema = mongoose.Schema;
 
@@ -34,7 +35,7 @@ const animationSchema = new Schema({
     pages: { type: [pageSchema], default: [], required: true },
     previewImage: { type: String },
     ID: { type: mongoose.Schema.Types.ObjectId, auto: true },
-    authKey: { type: mongoose.Schema.Types.ObjectId, auto: true },
+    authKey: { type: String, default: uuidv4 },
     public: { type: Boolean, required: true }
 })
 

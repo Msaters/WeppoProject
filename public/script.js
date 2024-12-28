@@ -3,6 +3,7 @@ import drawingLogic from './drawingLogic.js';
 import pageLogic from './pagesLogic.js';
 import data from './animationData.js';
 import pagesLogic from './pagesLogic.js';
+import serverLogic from './serverLogic.js'
 
 const canvas = document.getElementById('canvas');
 canvas.width = canvas.offsetWidth; // Ustawienie na szerokość elementu w pikselach
@@ -326,13 +327,6 @@ window.onclick = function(event) {
     }
 }
 
-function popUpModal(ID) {
-    modal.style.display = "block";
-    modal_content.innerHTML = 
-        `<span class="close">&times;</span>
-        <p id="textInModal">Twoje id: ` + ID.ID + `</p>`;
-}
-
 span.onclick = function() {
     modal.style.display = "none";
 }
@@ -354,85 +348,4 @@ document.getElementById("showAnimation").addEventListener("click", () => {
         modal.style.display = "none";
     });
 });
-
-async function saveCordinates() {
-    console.log("try pus");
-    
-    try {
-        const response = await fetch('/save-coordinates', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(points)
-        });
-
-        if (response.ok) {
-            const data = await response.json();
-            popUpModal(data);
-            console.log('Odpowiedź serwera:', data); 
-        } else {
-            console.error('Błąd podczas zapisu współrzędnych');
-        }
-    } catch (error) {
-        console.error('Błąd sieci:', error);
-    }
-}
-
-
-function pupUpModalForm() {
-    modal.style.display = "block";
-    modal_content.innerHTML = 
-        `<span class="close">&times;</span>
-        <form id="idForm">
-            <label for="AnimationId">Animation Id:</label>
-            <input type="text" id="AnimationId" name="AnimationId" required><br>
-            <button type="submit">Wyślij</button>
-    </form>`
-
-    // Funkcja do obsługi formularza
-    document.getElementById("idForm").addEventListener("submit", async function(event) {
-        event.preventDefault();  // Zapobiega domyślnej akcji formularza (przeładowanie strony)
-        
-        const ID = document.getElementById("AnimationId").value;
-        const formData = {
-            ID: ID
-        };
-
-        let alert_msg = "";
-        try {
-            const response = await fetch('/get-coordinates', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                drawPointsFromArrayToCanvas(data);
-                modal.style.display = "none";
-            } else {
-                if(response.status == 404) {
-                    alert_msg = 'Nie poprawne ID';
-                    console.error('Błąd podczas wpisu ID');
-                } else {
-                    console.error('Błąd serwera');
-                    alert_msg = 'Błąd serwera';
-                }
-            }
-        } catch (error) {
-            console.error('Błąd sieci:', error);
-            alert_msg = 'Błąd sieci';
-        }
-
-        if(alert_msg != "") {
-            console.log("alercik " + alert_msg);
-            modal_content.innerHTML = 
-            `<span class="close">&times;</span>
-            <p id="textInModal" style="color:red">Podales nie poprawne ID </p>`;
-        }
-    });
-}
-
-async function getCordinates() {
-    pupUpModalForm();
-}
 

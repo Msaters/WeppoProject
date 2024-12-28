@@ -127,6 +127,15 @@ main {
   justify-content: space-between;
 }
 
+.authInput {
+  width: 50vw;
+}
+
+.modalForm {
+  display: flex;
+  flex-direction: column;
+}
+
 /* The Modal (background) */
 .modal {
   display: none; /* Hidden by default */

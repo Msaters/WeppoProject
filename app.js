@@ -19,17 +19,15 @@ const connectDB = require('./server/database/db');
 // connect to db
 connectDB();
 
-app.post('/save-coordinates', (req, res) => {
-    const animation = req.body;
+// Animation Models
+const Animation = require('./server/models/Animaiton');
 
-    console.log("animation came");
-    console.log(animation);
-    const newAnimation = new Animation(animation);
+// routers
+const animationRoutes = require('./server/routes/animationRoutes');
 
-    newAnimation.save()
-        .then(() => console.log('Animation saved!'))
-        .catch((err) => console.error('Error saving animation:', err));
-});
+
+// using router
+app.use('/', animationRoutes);
 
 function getAnimationByID(Id) {
     return new Promise((res, rej) => {
