@@ -356,7 +356,7 @@ document.getElementById("showAnimation").addEventListener("click", () => {
 });
 
 async function saveCordinates() {
-    console.log("try push");
+    console.log("try pus");
     
     try {
         const response = await fetch('/save-coordinates', {
