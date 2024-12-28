@@ -1,4 +1,5 @@
-// app.js (plik serwera Express)
+require('dotenv').config();
+
 const express = require('express');
 const fs = require('fs');
 const readline = require('readline');
@@ -12,37 +13,22 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Endpoint do zapisu współrzędnych
 app.use(express.json());
 
-function makeId(size) {
-    let result = '';
-    characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+// db
+const connectDB = require('./server/database/db');
 
-    for(let i = 0; i < size; i++)
-    {
-        result += characters[Math.floor(Math.random() * characters.length)];
-    }
-    
-    return result;
-}
+// connect to db
+connectDB();
 
 app.post('/save-coordinates', (req, res) => {
-    const coordinates = req.body;
-    const actualId = makeId(12);
-    const cordinatesObject = {
-        coordinates: coordinates,
-        ID: actualId
-    };
+    const animation = req.body;
 
-    console.log("coordinates came");
-    console.log(cordinatesObject);
+    console.log("animation came");
+    console.log(animation);
+    const newAnimation = new Animation(animation);
 
-    // Zapisz współrzędne do pliku JSON
-    fs.appendFile('coordinates.json', JSON.stringify(cordinatesObject) + '\n', (err) => {
-        if (err) {
-            console.error('Błąd podczas zapisu:', err);
-            return res.status(500).send({ error: 'Błąd serwera' });
-        }
-        res.status(200).send({ ID: actualId });
-    });
+    newAnimation.save()
+        .then(() => console.log('Animation saved!'))
+        .catch((err) => console.error('Error saving animation:', err));
 });
 
 function getAnimationByID(Id) {
