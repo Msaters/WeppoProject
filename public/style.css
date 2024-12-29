@@ -31,6 +31,11 @@ footer {
   bottom: 20px;
 }
 
+#curveSteering {
+  position: relative;
+  bottom: 0.1em;
+}
+
 #curvesCounter {
   position: absolute;
 }
@@ -81,7 +86,7 @@ footer {
 #pageSteeringContent {
   position: relative;
   right: 8vw;
-  bottom: 2vh;
+  bottom: 1vh;
 }
 
 #showActiveCurveDiv {
@@ -231,7 +236,7 @@ main {
   font-size: 13px;
   outline: 0;
   overflow: hidden;
-  padding: 0 11px;
+  padding: 0 6px;
   text-align: center;
   text-decoration: none;
   text-overflow: ellipsis;

@@ -121,6 +121,8 @@ canvas.addEventListener("mousemove", async (event) => {
 
 // curve Logic for buttons
 function addNewCurve() {
+    console.log("siema");
+    
     curvesLogic.addNewCurve(data.actualPage.curves);
 }
 document.getElementById("addNewCurve").addEventListener("click", addNewCurve);
