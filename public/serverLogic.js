@@ -1,5 +1,5 @@
 import data from './animationData.js';
-import { canvasWidth, canvasHeight, takeComputedSizeForCanvas } from './script.js';
+import { canvasWidth, canvasHeight, takeComputedSizeForCanvas, getCanvasImgURL } from './script.js';
 import animationLogic from './animationLogic.js';
 
 // modal
@@ -58,8 +58,15 @@ function popUpReadSuccessfullModal(ID) {
         <p>Successfully read animation with id: ` + ID.ID + `</p><br>`;
 }
 
+function popUpUpdateSuccessfullModal() {
+    modal.style.display = "block";
+    modal_content.innerHTML = 
+        `<span class="close">&times;</span>
+        <p>Successfully updated animation</p><br>`;
+}
+
 // server connection functions
-async function saveAnimation() {
+async function saveAnimationOrPut() {
     modal.style.display = "block";
     modal_content.innerHTML = 
         `<span class="close">&times;</span>
@@ -78,40 +85,65 @@ async function saveAnimation() {
         const authKey  = document.getElementById("authKey").value;
 
         const newAnimation = JSON.parse(JSON.stringify(data.animation));
-        if(authKey !== "none") {
-            // TODO: HTTP PUT
-            newAnimation.authKey = authKey;
-        }
-        // TODO: else HTTP POST 
-
         newAnimation.public = isPublic;
         
         takeComputedSizeForCanvas();
         newAnimation.canvasWidth = canvasWidth;
         newAnimation.canvasHeight = canvasHeight;
-        
+        newAnimation.previewImage = getCanvasImgURL();
+        var response;
 
         try {
-            const response = await fetch('/save-animation', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newAnimation)
-            });
+            if(authKey !== "none") {
+                newAnimation.authKey = authKey;
+                response = await fetch('/put-animation', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newAnimation)
+                });
 
-            if (response.ok) {
-                const data = await response.json();
-                popUpModal(data);
-                console.log('Odpowiedź serwera:', data); 
+                if (response.ok) {
+                    popUpUpdateSuccessfullModal();
+                    return;
+                }
+
             } else {
-                console.error('Błąd podczas zapisu współrzędnych');
+                response = await fetch('/save-animation', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(newAnimation)
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    popUpModal(data);
+                    console.log('Odpowiedź serwera:', data); 
+                    return;
+                }
+            }
+
+    
+            switch (response.status) {
+                case 400:
+                    console.log("user gave wrong format of data");
+                    popUpCastErrorModal();
+                    break;
+                case 404:
+                    console.log("user gave data that is not in database")
+                    popUpNotFoundModal();
+                    break;
+                default:
+                    console.error("not suppoerted response status in save animation");
+                    pupUpNotSuppoertedStatusCode();
+                    break;
             }
         } catch (error) {
             popUpServerErrorModal();
-            console.error('Błąd sieci:', error);
+            console.error('server error:', error);
         }
     });
 }
-document.getElementById("saveAnimation").addEventListener("click", saveAnimation);
+document.getElementById("saveAnimation").addEventListener("click", saveAnimationOrPut);
 
 async function readAnimation() {
     modal.style.display = "block";

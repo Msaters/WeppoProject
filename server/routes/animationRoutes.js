@@ -6,8 +6,6 @@ const router = express.Router();
 router.post('/save-animation', (req, res) => {
     const animation = req.body;
 
-    console.log("animation came");
-    console.log(animation);
     const newAnimation = new Animation(animation);
 
     newAnimation.save()
@@ -26,9 +24,45 @@ router.post('/save-animation', (req, res) => {
         });
 });
 
-    // to do
-    // if authKey then try to update
-    // router.put
+router.put('/put-animation', async (req, res) => {
+    try {
+        const clientAnimation = req.body;
+
+        const query = {
+            authKey: clientAnimation.authKey
+        };
+
+        const updateDoc = {
+            $set: {
+                pages: clientAnimation.pages,
+                canvasHeight: clientAnimation.canvasHeight,
+                canvasWidth: clientAnimation.canvasWidth,
+                public: clientAnimation.public
+            },
+          };
+        
+        const animation = await Animation.updateOne(query, updateDoc);
+
+        if(animation.matchedCount === 0) {
+            console.log("No documents matched the query. Updated 0 documents.");
+            res.status(404).send();
+            return;
+        }
+        
+        
+        res.status(200).send();
+
+    } catch(err) {
+        if(err instanceof mongoose.Error.CastError) {
+            console.log("CastError while updating animation", err);
+            res.status(400).send();
+            return;
+        }
+
+        console.log("Error updating animation: ", err);
+        res.status(500).send(err);
+    }
+});
 
 router.get('/get-animation/:id', async (req, res) => {
     try {
@@ -37,7 +71,6 @@ router.get('/get-animation/:id', async (req, res) => {
         const query = {
             _id: ID
         };
-        console.log(query);
         
         const animation = await Animation.findOne(query);
 
@@ -76,7 +109,7 @@ router.delete('/delete-animation', async (req, res) => {
         const authData = req.body;
 
         const query = {
-            ID: authData.ID,
+            _id: authData.ID,
             authKey: authData.authKey
         }
         const result = await Animation.deleteOne(query);

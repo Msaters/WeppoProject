@@ -4,6 +4,7 @@ html, body {
 
 body {
   background-color: #888;
+  font-family: 'Roboto', sans-serif;
 }
 
 h2 {
@@ -85,12 +86,14 @@ footer {
 
 #showActiveCurveDiv {
   position: relative;
-  bottom: 1.70vh;
+  left: 0.15vw;
+  bottom: 1.8vh;
 }
 
 #showPreviousPageDiv {
   position: relative;
-  bottom: 0.7vh;
+  left: 0.15vw;
+  bottom: 0.8vh;
 }
 
 #pageSettingsNav {
@@ -170,3 +173,137 @@ main {
   text-decoration: none;
   cursor: pointer;
 }
+
+#toggleInput {
+  margin: auto;
+  margin-bottom: 0.2em;
+}
+
+
+/* uis */
+/* CSS */
+.button-13 {
+  background-color: #dedede;
+  border: 1px solid #3c4545;
+  border-radius: 8px;
+  color: #0f1111;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Amazon Ember",sans-serif;
+  font-size: 13px;
+  line-height: 29px;
+  padding: 0 10px 0 11px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+}
+
+.button-13:hover {
+  box-shadow: rgba(213, 217, 217, .5) 0 1px 2px 0;
+  box-sizing: border-box;
+  background-color: #f2f4f4;
+}
+
+.button-13:focus {
+  border-color: #008296;
+  box-shadow: rgba(213, 217, 217, .5) 0 2px 5px 0;
+  outline: 0;
+}
+
+.button-14 {
+  background-image: linear-gradient(#f7f8fa ,#e7e9ec);
+  border-color: #adb1b8 #a2a6ac #8d9096;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 3px;
+  box-shadow: rgba(255,255,255,.6) 0 1px 0 inset;
+  box-sizing: border-box;
+  color: #0f1111;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Amazon Ember",Arial,sans-serif;
+  font-size: 14px;
+  height: 2em;
+  font-size: 13px;
+  outline: 0;
+  overflow: hidden;
+  padding: 0 11px;
+  text-align: center;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+.button-14:active {
+  border-bottom-color: #a2a6ac;
+}
+
+.button-14:active:hover {
+  border-bottom-color: #a2a6ac;
+}
+
+.button-14:hover {
+  border-color: #a2a6ac #979aa1 #82858a;
+}
+
+.button-14:focus {
+  border-color: #e77600;
+  box-shadow: rgba(228, 121, 17, .5) 0 0 3px 2px;
+  outline: 0;
+}
+
+.input {
+  border: 2px solid transparent;
+  width: 4em;
+  height: 1.5em;
+  padding-left: 0.8em;
+  margin-top: 0.2em;
+  outline: none;
+  overflow: hidden;
+  background-color: #F3F3F3;
+  border-radius: 10px;
+  transition: all 0.5s;
+}
+
+.input:hover,
+.input:focus {
+  border: 2px solid #4A9DEC;
+  box-shadow: 0px 0px 0px 7px rgb(74, 157, 236, 20%);
+  background-color: white;
+}
+
+
+  /* Style for the custom checkbox */
+.custom-checkbox {
+  display: inline-block;
+  width: 1.35em;
+  height: 1.35em;
+  border: 2px solid #333;
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+}
+
+  /* Style for the custom checkmark */
+.custom-checkbox::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background-color: #333;
+  border-radius: 2px;
+  opacity: 0;
+}
+
+

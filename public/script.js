@@ -21,6 +21,12 @@ export function takeComputedSizeForCanvas() {
     canvasHeight = canvas.height;
 }
 
+export function getCanvasImgURL() {
+    const img = canvas.toDataURL();
+    updateCanvas();
+    return img;
+}
+
 // modal
 var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
@@ -138,11 +144,11 @@ function curveCopy() {
         `<span class="close">&times;</span>
         <form id="copyCurveForm" class="form-container column-group">
             <div style="display:flex; justify-content: space-evenly;">
-                <div class="column-group">
+                <div class="column-group inputGroup">
                     <label for="fromCopyCurve">from</label>
                     <input type="number" id="fromCopyCurve" name="fromCopyCurve" min=1 max=${data.actualPage.curves.length} required style="width:20vw;">
                 </div>
-                <div class="column-group">
+                <div class="column-group inputGroup">
                     <label for="toCopyCurve">to</label>
                     <input type="number" id="toCopyCurve" name="toCopyCurve" min=1 max=${data.actualPage.curves.length} value=${data.actualCurveIndex + 1} required style="width:20vw;">
                 </div>

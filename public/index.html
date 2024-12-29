@@ -6,26 +6,29 @@
     <title>Frame Animation</title>
     <link rel="stylesheet" href="style.css">
     <script type="module" src="script.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <header>
         <div id="headerOptions">
             <div class="visible">
-                <button id="saveAnimation">Save</button>
-                <button id="readAnimation">Open</button>
-                <button id="deleteAnimation">Delete</button>
+                <button id="saveAnimation" class="button-13">Save</button>
+                <button id="readAnimation" class="button-13">Open</button>
+                <button id="deleteAnimation" class="button-13">Delete</button>
             </div>
-            <div id="CurveSteer" class="visible">
+            <div class="visible" class="column-group">
                 <h2>Curve Steering</h2>
-                <button id="addNewCurve"> + </button>
-                <button id="moveCurveLeft">left</button>
-                <button id="moveCurveRight">right</button>
-                <button id="curveCopy">copy</button>
-                <button id="CurveUndo">undo</button>
-                <div style="display: inline-block;">
-                    <div class="column-group" id="showActiveCurveDiv">
-                        <label for="showActiveCurve">show</label>
-                        <input type="checkbox" id="showActiveCurve">
+                <div>
+                    <button id="addNewCurve" class="button-14"> + </button>
+                    <button id="moveCurveLeft" class="button-14">left</button>
+                    <button id="moveCurveRight" class="button-14">right</button>
+                    <button id="curveCopy" class="button-14">copy</button>
+                    <button id="CurveUndo" class="button-14">undo</button>
+                    <div style="display: inline-block;">
+                        <div class="column-group" id="showActiveCurveDiv">
+                            <label for="showActiveCurve">show</label>
+                            <input type="checkbox" id="showActiveCurve" class="custom-checkbox">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -34,13 +37,13 @@
                 <div class="column-group" id="pageSettingsNav">
                     <h2>Page Options</h2>
                     <div id="pageSettingsContent">
-                        <button id="clearPage" class="pageSettingsButton">clear</button>
-                        <button id="copyPage" class="pageSettingsButton">copy</button>
-                        <button id="deletePage" class="pageSettingsButton">delete</button>
-                        <button id="resizePage" class="pageSettingsButton">resize</button>
+                        <button id="clearPage" class="pageSettingsButton button-14">clear</button>
+                        <button id="copyPage" class="pageSettingsButton button-14">copy</button>
+                        <button id="deletePage" class="pageSettingsButton button-14">delete</button>
+                        <button id="resizePage" class="pageSettingsButton button-14">resize</button>
                         <div class="column-group" id="showPreviousPageDiv">
                             <label for="showPreviousPage">show</label>
-                            <input type="checkbox" id="showPreviousPage">
+                            <input type="checkbox" id="showPreviousPage" class="custom-checkbox">
                         </div>
                     </div>
                 </div>
@@ -53,32 +56,31 @@
                 <div id="dragSettings">
                     <div class="column-group">
                         <label for="togglePageSettingNone">none</label>
-                        <input type="checkbox" id="togglePageSettingNone" class="radioPageSettings" checked="true">
+                        <input type="checkbox" id="togglePageSettingNone" class="radioPageSettings custom-checkbox" checked="true">
                     </div>
                     <div class="column-group">
                         <label for="togglePageSettingPoint">point</label>
-                        <input type="checkbox" id="togglePageSettingPoint" class="radioPageSettings">
+                        <input type="checkbox" id="togglePageSettingPoint" class="radioPageSettings custom-checkbox">
                     </div>
                     <div class="column-group">
                         <label for="togglePageSettingCurve">curve</label>
-                        <input type="checkbox" id="togglePageSettingCurve" class="radioPageSettings">
+                        <input type="checkbox" id="togglePageSettingCurve" class="radioPageSettings custom-checkbox">
                     </div>
                     <div class="column-group">
                         <label for="togglePageSettingPage">page</label>
-                        <input type="checkbox" id="togglePageSettingPage" class="radioPageSettings">
+                        <input type="checkbox" id="togglePageSettingPage" class="radioPageSettings custom-checkbox">
                     </div>
                     <div class="column-group">
                         <label for="togglePageSettingforAll">forall</label>
-                        <input type="checkbox" id="togglePageSettingforAll">
+                        <input type="checkbox" id="togglePageSettingforAll" class="custom-checkbox">
                     </div>
                 </div>
             </div>
 
 
             <div id="navigation" class="visible">
-                <button id="showAnimation">animate</button>
-                <!-- ??<button id="accountButton">acc</button>?? -->
-                <button id="showPublicAnimations">public</button>
+                <button id="showAnimation" class="button-13">animate</button>
+                <button id="showPublicAnimations" onclick="window.location.href='./public.html'" class="button-13">public</button>
             </div>
         </div>
 
@@ -114,47 +116,47 @@
         <div class="column-group" id="pageSteeringContent">
             <h3>Page Steering</h3>
             <div id="pageSteer" class="visible">
-                <button id="addNewPage"> + </button>
-                <button id="movePageLeft">left</button>
-                <button id="movePageRight">right</button>
+                <button id="addNewPage" class="button-14"> + </button>
+                <button id="movePageLeft" class="button-14">left</button>
+                <button id="movePageRight" class="button-14">right</button>
             </div>
          </div>
         <div id="settings" class="form-container visible">
             <form id="settingsForm" class="form-container">
                 <div class="column-group">
                     <label for="R">R:</label>
-                    <input type="number" id="R" name="R" min="0" max="255" required>
+                    <input type="number" id="R" name="R" min="0" max="255" required class="input">
                 </div>
                 <div class="column-group">
                     <label for="G">G:</label>
-                    <input type="number" id="G" name="G" min="0" max="255" required>
+                    <input type="number" id="G" name="G" min="0" max="255" required class="input">
                 </div>
                 <div class="column-group">
                     <label for="B">B:</label>
-                    <input type="number" id="B" name="B" min="0" max="255" required>
+                    <input type="number" id="B" name="B" min="0" max="255" required class="input">
                 </div>
                 <div class="column-group">
                     <label for="A">A:</label>
-                    <input type="number" id="A" name="A" min="0" max="1" step="0.01" required>
+                    <input type="number" id="A" name="A" min="0" max="1" step="0.01" required class="input">
                 </div>
                 <div class="column-group">
                     <label for="LineWidth">LineWidth:</label>
-                    <input type="number" id="LineWidth" name="LineWidth" min="1" max="255" required>
+                    <input type="number" id="LineWidth" name="LineWidth" min="1" max="255" required class="input">
                 </div>
                 <div class="column-group">
                     <label for="PointWidth">PointWidth:</label>
-                    <input type="number" id="PointWidth" name="PointWidth" min="1" max="255">
+                    <input type="number" id="PointWidth" name="PointWidth" min="1" max="255" class="input">
                 </div>
                 <div class="column-group">
                     <label for="PointHeight">PointHeight:</label>
-                    <input type="number" id="PointHeight" name="PointHeight" min="1" max="255">
+                    <input type="number" id="PointHeight" name="PointHeight" min="1" max="255" class="input">
                 </div>
                 <button type="submit">save</button>
             </form>
             <button id="reset">reset</button>
             <div class="column-group">
                 <label for="toggleInput">Pokaz Punkty:</label>
-                <input type="checkbox" id="toggleInput" checked="true">
+                <input type="checkbox" id="toggleInput" checked="true" class="custom-checkbox">
             </div>
         </div>
     </footer>
