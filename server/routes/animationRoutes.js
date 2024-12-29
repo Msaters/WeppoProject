@@ -10,9 +10,6 @@ router.post('/save-animation', (req, res) => {
     console.log(animation);
     const newAnimation = new Animation(animation);
 
-    // to do
-    // if authKey then try to update
-
     newAnimation.save()
         .then((savedAnimation) => {
             console.log('Animation saved!');
@@ -29,6 +26,50 @@ router.post('/save-animation', (req, res) => {
         });
 });
 
+    // to do
+    // if authKey then try to update
+    // router.put
+
+router.get('/get-animation/:id', async (req, res) => {
+    try {
+        const ID = req.params.id;
+        
+        const query = {
+            _id: ID
+        };
+        console.log(query);
+        
+        const animation = await Animation.findOne(query);
+
+        if(animation === null) {
+            console.log("No documents matched the query. Read 0 documents.");
+            res.status(404).send();
+            return;
+        }
+
+        const { _id, authKey, __v,...newAnimation } = animation.toObject();
+        console.log("new animation", newAnimation);
+        res.status(200).send(newAnimation);
+
+    } catch(err) {
+        if(err instanceof mongoose.Error.CastError) {
+            console.log("CastError while reading animation", err);
+            res.status(400).send();
+            return;
+        }
+
+        console.log("Error reading animation: ", err);
+        res.status(500).send(err);
+    }
+});
+
+async function delteAll() {
+    console.log("deleting");
+    
+    await Animation.deleteMany({public: true});
+    await Animation.deleteMany({public: false});
+}
+
 router.delete('/delete-animation', async (req, res) => {
     try {
         console.log(req.body);
@@ -42,7 +83,7 @@ router.delete('/delete-animation', async (req, res) => {
 
         if (result.deletedCount === 1) {
             console.log("Successfully deleted one document.");
-            res.status(201).send();
+            res.status(201).send({ID: authData.ID});
         } else {
             console.log("No documents matched the query. Deleted 0 documents.");
             res.status(404).send();

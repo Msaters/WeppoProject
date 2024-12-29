@@ -8,9 +8,14 @@ import serverLogic from './serverLogic.js'
 const canvas = document.getElementById('canvas');
 canvas.width = canvas.offsetWidth; // Ustawienie na szerokość elementu w pikselach
 canvas.height = canvas.offsetHeight; // Ustawienie na wysokość elementu w pikselach
-const canvasWidth = canvas.width;
-const canvasHeight = canvas.height;
+export const canvasWidth = canvas.width;
+export const canvasHeight = canvas.height;
 const ctx = canvas.getContext("2d");
+
+// modal
+var modal = document.getElementById("myModal");
+var span = document.getElementsByClassName("close")[0];
+var modal_content  = document.getElementById("myModalContet");
 
 const initialize = () => {
     data.pointsVisibility = true;
@@ -114,6 +119,36 @@ function moveCurveLeft() {
     updateCanvas();
 }
 document.getElementById("moveCurveLeft").addEventListener("click", moveCurveLeft);
+
+function curveCopy() {
+    
+    modal.style.display = "block";
+    modal_content.innerHTML = 
+        `<span class="close">&times;</span>
+        <form id="copyCurveForm" class="form-container column-group">
+            <div style="display:flex; justify-content: space-evenly;">
+                <div class="column-group">
+                    <label for="fromCopyCurve">from</label>
+                    <input type="number" id="fromCopyCurve" name="fromCopyCurve" min=1 max=${data.actualPage.curves.length} required style="width:20vw;">
+                </div>
+                <div class="column-group">
+                    <label for="toCopyCurve">to</label>
+                    <input type="number" id="toCopyCurve" name="toCopyCurve" min=1 max=${data.actualPage.curves.length} value=${data.actualCurveIndex + 1} required style="width:20vw;">
+                </div>
+            </div>
+            <button type="submit" style="width: 10vw; margin: auto;">copy</button>
+        </form>`;
+
+    document.getElementById("copyCurveForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
+        const indexFrom = document.getElementById("fromCopyCurve").value;
+        const indexTo = document.getElementById("toCopyCurve").value;
+        curvesLogic.curveCopy(indexFrom - 1, indexTo - 1);
+        modal.style.display = "none";
+        updateCanvas();
+    });
+}
+document.getElementById("curveCopy").addEventListener("click", curveCopy);
 
 function CurveUndo() {
     curvesLogic.CurveUndo(data.actualCurve);
@@ -226,8 +261,6 @@ export function updatePageCounter() {
 }
 
 export function updateCurveCounter() {
-    console.log(data.animation);
-    console.log("actualPage:", data.actualPage, "length:",data.actualPage.curves.length);
     document.getElementById("curvesCounter").innerHTML = 
     `${data.actualCurveIndex + 1}/${data.actualPage.curves.length}`;
 }
@@ -279,7 +312,6 @@ document.getElementById("deletePage").addEventListener("click", deletePage);
 //Drag options
 const radioList = document.getElementsByClassName("radioPageSettings")
 function setRadioValues(target) {
-    console.log(target.id);
     if(target.checked === false) {
         data.dragOption = "none";
         document.getElementById("togglePageSettingNone").checked = true;
@@ -315,11 +347,6 @@ for (const element of radioList) {
     });
 }
 
-
-// modal
-var modal = document.getElementById("myModal");
-var span = document.getElementsByClassName("close")[0];
-var modal_content  = document.getElementById("myModalContet");
 
 window.onclick = function(event) {
     if (event.target == modal) {

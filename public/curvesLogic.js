@@ -62,6 +62,11 @@ function moveCurveLeft() {
     updateActualCurve();
 }
 
+function curveCopy(indexFrom, indexTo) {
+    data.actualPage.curves[indexTo] = JSON.parse(JSON.stringify(data.actualPage.curves[indexFrom]));
+    data.actualCurve = data.actualPage.curves[data.actualCurveIndex];
+}
+
 function CurveUndo(curve) {
     curve.points.pop();
 }
@@ -86,6 +91,7 @@ function getAllCurvesFromActualPage() {
 
 // draging logic
 function isCurveClicked(bezierPoints, startingX, startingY, reachingWidth, reachingHeight) {
+    
     for (const bezierPoint of bezierPoints) {
         if(Math.abs(bezierPoint.xcord - startingX) <= reachingWidth && Math.abs(bezierPoint.ycord - startingY) <= reachingHeight) {
             return true;
@@ -142,6 +148,7 @@ export default {
     addPointsToCurve,
     moveCurveRight,
     moveCurveLeft,
+    curveCopy,
     CurveUndo,
     getAllPointsFromActualPage,
     getAllCurvesFromActualPage,

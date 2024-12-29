@@ -1,10 +1,39 @@
 import data from './animationData.js';
+import { canvasWidth, canvasHeight } from './script.js';
 
 // modal
 var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
 var modal_content  = document.getElementById("myModalContet");
 
+// modal content functions
+function popUpCastErrorModal() {
+    modal.style.display = "block";
+    modal_content.innerHTML = 
+        `<span class="close">&times;</span>
+        <p>You gave wrond data format, check if length is correct</p><br>`;
+}
+
+function popUpNotFoundModal() {
+    modal.style.display = "block";
+    modal_content.innerHTML = 
+        `<span class="close">&times;</span>
+        <p>Animation not found</p><br>`;
+}
+
+function popUpServerErrorModal() {
+    modal.style.display = "block";
+    modal_content.innerHTML = 
+        `<span class="close">&times;</span>
+        <p>Server Error</p><br>`;
+}
+
+function pupUpNotSuppoertedStatusCode() {
+    modal.style.display = "block";
+    modal_content.innerHTML = 
+        `<span class="close">&times;</span>
+        <p>not suppoerted response status</p><br>`;
+}
 
 function popUpModal(ID) {
     modal.style.display = "block";
@@ -14,6 +43,13 @@ function popUpModal(ID) {
         <p id="textInModal">Your authKey: ` + ID.authKey + `</p>`;
 }
 
+function popUpDeleteSuccessfullModal(ID) {
+    modal.style.display = "block";
+    modal_content.innerHTML = 
+        `<span class="close">&times;</span>
+        <p>Deleted animation with id: ` + ID.ID + `</p><br>`;
+}
+
 // server connection functions
 async function saveAnimation() {
     modal.style.display = "block";
@@ -21,10 +57,10 @@ async function saveAnimation() {
         `<span class="close">&times;</span>
         <form id="saveAnimationForm" class="modalForm">
             <label for="authKey">auth key:</label>
-            <input type="text" id="authKey" name="authKey" value="none"><br>
+            <input type="text" id="authKey" name="authKey" value="none" class="authInput"><br>
             <label for="publicCheckbox">public:</label>
-            <input type="checkbox" id="publicCheckbox" name="publicCheckbox" value="true"><br>
-            <button type="submit">send</button>
+            <input type="checkbox" id="publicCheckbox" name="publicCheckbox" value="true" class="authInput"><br>
+            <button type="submit" class="authInputButton">send</button>
     </form>`
 
     document.getElementById("saveAnimationForm").addEventListener("submit", async function(event) {
@@ -41,6 +77,13 @@ async function saveAnimation() {
         // TODO: else HTTP POST 
 
         newAnimation.public = isPublic;
+        console.log(canvasWidth, canvasHeight);
+        
+        newAnimation.canvasWidth = canvasWidth;
+        newAnimation.canvasHeight = canvasHeight;
+
+        console.log(newAnimation);
+        
 
         try {
             const response = await fetch('/save-animation', {
@@ -57,89 +100,63 @@ async function saveAnimation() {
                 console.error('Błąd podczas zapisu współrzędnych');
             }
         } catch (error) {
+            popUpServerErrorModal();
             console.error('Błąd sieci:', error);
         }
     });
 }
 document.getElementById("saveAnimation").addEventListener("click", saveAnimation);
 
-
-/*function pupUpModalForm() {
+async function readAnimation() {
     modal.style.display = "block";
     modal_content.innerHTML = 
         `<span class="close">&times;</span>
-        <form id="idForm">
-            <label for="AnimationId">Animation Id:</label>
-            <input type="text" id="AnimationId" name="AnimationId" required><br>
-            <button type="submit">Wyślij</button>
+        <form id="readAnimationForm" class="modalForm">
+            <label for="readAnimationId">id:</label>
+            <input type="text" id="readAnimationId" name="readAnimationId" required class="authInput"><br>
+            <button type="submit" class="authInputButton">send</button>
     </form>`
 
-    // Funkcja do obsługi formularza
-    document.getElementById("idForm").addEventListener("submit", async function(event) {
-        event.preventDefault();  // Zapobiega domyślnej akcji formularza (przeładowanie strony)
-        
-        const ID = document.getElementById("AnimationId").value;
-        const formData = {
-            ID: ID
-        };
+    document.getElementById("readAnimationForm").addEventListener("submit", async function(event) {
+        event.preventDefault(); 
 
-        let alert_msg = "";
+        const ID  = document.getElementById("readAnimationId").value;
+
         try {
-            const response = await fetch('/get-coordinates', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
+            const response = await fetch(`/get-animation/${ID}`, {
+                method: 'GET'
             });
 
             if (response.ok) {
                 const data = await response.json();
-                drawPointsFromArrayToCanvas(data);
-                modal.style.display = "none";
+                // zczytaj dane do animacji i przeskaluj
+                console.log(`Server's response:`, data); 
             } else {
-                if(response.status == 404) {
-                    alert_msg = 'Nie poprawne ID';
-                    console.error('Błąd podczas wpisu ID');
-                } else {
-                    console.error('Błąd serwera');
-                    alert_msg = 'Błąd serwera';
+                switch (response.status) {
+                    case 400:
+                        console.log("user gave wrong format of data");
+                        popUpCastErrorModal();
+                        break;
+                    case 404:
+                        console.log("user gave data that is not in database")
+                        popUpNotFoundModal();
+                        break;
+                    default:
+                        console.error("not suppoerted response status in readAnimation");
+                        pupUpNotSuppoertedStatusCode();
+                        break;
                 }
             }
         } catch (error) {
-            console.error('Błąd sieci:', error);
-            alert_msg = 'Błąd sieci';
-        }
-
-        if(alert_msg != "") {
-            console.log("alercik " + alert_msg);
-            modal_content.innerHTML = 
-            `<span class="close">&times;</span>
-            <p id="textInModal" style="color:red">Podales nie poprawne ID </p>`;
+            popUpServerErrorModal();
+            console.error('server error:', error);
         }
     });
-}*/
-
-function popUpDeleteSuccessfullModal() {
-    modal.style.display = "block";
-    modal_content.innerHTML = 
-        `<span class="close">&times;</span>
-        <p>Delete animation with id: ` + ID.ID + `</p><br>`;
 }
+document.getElementById("readAnimation").addEventListener("click", readAnimation);
 
-function popUpDeleteCastErrorModal() {
-    modal.style.display = "block";
-    modal_content.innerHTML = 
-        `<span class="close">&times;</span>
-        <p>You gave wrond data format, check if length is correct</p><br>`;
-}
 
-function popUpDeleteNotFoundModal() {
-    modal.style.display = "block";
-    modal_content.innerHTML = 
-        `<span class="close">&times;</span>
-        <p>Animation not found, check if length is correct</p><br>`;
-}
-
-const deleteAnimation = function () {
+const deleteAnimation = async function () {
     modal.style.display = "block";
     modal_content.innerHTML = 
         `<span class="close">&times;</span>
@@ -148,7 +165,7 @@ const deleteAnimation = function () {
             <input type="text" id="authKeyDeleteForm" name="authKeyDeleteForm" class="authInput" required><br>
             <label for="idDeleteForm">id:</label>
             <input type="text" id="idDeleteForm" name="idDeleteForm" class="authInput" required><br>
-            <button type="submit" class="authInput">send</button>
+            <button type="submit" class="authInputButton">send</button>
     </form>`
 
     document.getElementById("deleteAnimationForm").addEventListener("submit", async function(event) {
@@ -169,25 +186,27 @@ const deleteAnimation = function () {
 
             if (response.ok) {
                 const data = await response.json();
-                popUpDeleteSuccessfullModal();
+                popUpDeleteSuccessfullModal(data);
                 console.log(`Server's response:`, data); 
             } else {
                 switch (response.status) {
                     case 400:
                         console.log("user gave wrong format of data");
-                        popUpDeleteCastErrorModal();
+                        popUpCastErrorModal();
                         break;
                     case 404:
                         console.log("user gave data that is not in database")
-                        popUpDeleteCastErrorModal();
+                        popUpNotFoundModal();
                         break;
                     default:
                         console.error("not suppoerted response status in deleteAnimation");
+                        pupUpNotSuppoertedStatusCode();
                         break;
                 }
             }
         } catch (error) {
-            console.error('Błąd sieci:', error);
+            popUpServerErrorModal();
+            console.error('server error:', error);
         }
     });
 }

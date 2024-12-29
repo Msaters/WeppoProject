@@ -7,7 +7,7 @@ const Schema = mongoose.Schema;
 const pointSchema = new Schema({
     xcord: { type: Number, required: true },
     ycord: { type: Number, required: true },
-});
+}, { _id: false });
 
 // Curve Schema
 const curveSchema = new Schema({
@@ -22,22 +22,29 @@ const curveSchema = new Schema({
         pointHeight: { type: Number, default: 10, required: true },
     },
     points: { type: [pointSchema], default: [], required: true }, 
-});
+}, { _id: false });
 
 // Page Schema
 const pageSchema = new Schema({
     curves: { type: [curveSchema], default: [], required: true },
     curveIndex: { type: Number, default: 0, required: true }
-})
+}, { _id: false })
 
 // Animation Schema
 const animationSchema = new Schema({
     pages: { type: [pageSchema], default: [], required: true },
     previewImage: { type: String },
-    ID: { type: mongoose.Schema.Types.ObjectId, auto: true },
     authKey: { type: String, default: uuidv4 },
-    public: { type: Boolean, required: true }
+    public: { type: Boolean, required: true },
+    canvasWidth: { type: Number, required: true },
+    canvasHeight: { type: Number, required: true }
 })
+
+animationSchema.virtual('ID').get(function () {
+    return this._id;
+});
+
+animationSchema.set('toJSON', { virtuals: true });
 
 // Export the Animation Model
 module.exports = mongoose.model('Animation', animationSchema);
