@@ -3,14 +3,23 @@ import drawingLogic from './drawingLogic.js';
 import pageLogic from './pagesLogic.js';
 import data from './animationData.js';
 import pagesLogic from './pagesLogic.js';
-import serverLogic from './serverLogic.js'
+import serverLogic from './serverLogic.js';
+import animationLogic from './animationLogic.js';
 
+// canvas
 const canvas = document.getElementById('canvas');
 canvas.width = canvas.offsetWidth; // Ustawienie na szerokość elementu w pikselach
 canvas.height = canvas.offsetHeight; // Ustawienie na wysokość elementu w pikselach
-export const canvasWidth = canvas.width;
-export const canvasHeight = canvas.height;
+export var canvasWidth = canvas.width;
+export var canvasHeight = canvas.height;
 const ctx = canvas.getContext("2d");
+
+export function takeComputedSizeForCanvas() {
+    canvas.width = canvas.offsetWidth; 
+    canvas.height = canvas.offsetHeight; 
+    canvasWidth = canvas.width;
+    canvasHeight = canvas.height;
+}
 
 // modal
 var modal = document.getElementById("myModal");
@@ -20,12 +29,14 @@ var modal_content  = document.getElementById("myModalContet");
 const initialize = () => {
     data.pointsVisibility = true;
     pageLogic.addNewPage(); 
-    data.actualPage = data.animation.pages[data.PageIndex];
+    data.actualPage  = data.animation.pages[data.PageIndex];
     data.actualCurve = data.animation.pages[data.PageIndex].curves[data.actualCurveIndex];
+    data.animation.canvasHeight = canvasHeight;
+    data.animation.canvasWidth  = canvasWidth;
 }
 initialize();
 
-function updateCanvas() {
+export function updateCanvas() {
     drawingLogic.updateCanvas(data.actualPage.curves, ctx, canvasWidth, canvasHeight);
 }
 
@@ -162,7 +173,7 @@ function showActiveCurve() {
 }
 document.getElementById("showActiveCurve").addEventListener("click", showActiveCurve);
 
-// pages logic buttons
+// pages settings logic buttons 
 function addNewPage() {
     pageLogic.addNewPage();
 }
@@ -181,12 +192,6 @@ const movePageLeft = () => {
     updateCanvas();
 }
 document.getElementById("movePageLeft").addEventListener("click", movePageLeft);
-
-const showPreviousPage = function() {
-    data.isShowingPreviousPage = document.getElementById("showPreviousPage").checked;
-    updateCanvas();
-}
-document.getElementById("showPreviousPage").addEventListener("click", showPreviousPage);
 
 
 //settings
@@ -308,6 +313,19 @@ function deletePage() {
 }
 document.getElementById("deletePage").addEventListener("click", deletePage);
 
+const resizePage = function() {
+    takeComputedSizeForCanvas();
+    animationLogic.animationToClientData(data.animation, canvasWidth, canvasHeight);
+    updateCanvas();
+}
+document.getElementById("resizePage").addEventListener("click", resizePage);
+
+const showPreviousPage = function() {
+    data.isShowingPreviousPage = document.getElementById("showPreviousPage").checked;
+    updateCanvas();
+}
+document.getElementById("showPreviousPage").addEventListener("click", showPreviousPage);
+
 
 //Drag options
 const radioList = document.getElementsByClassName("radioPageSettings")
@@ -347,15 +365,11 @@ for (const element of radioList) {
     });
 }
 
-
 window.onclick = function(event) {
-    if (event.target == modal) {
+    if (event.target == modal || event.target.classList.contains("close")) {
       modal.style.display = "none";
     }
-}
 
-span.onclick = function() {
-    modal.style.display = "none";
 }
 
 // animation

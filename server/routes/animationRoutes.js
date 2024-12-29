@@ -48,7 +48,7 @@ router.get('/get-animation/:id', async (req, res) => {
         }
 
         const { _id, authKey, __v,...newAnimation } = animation.toObject();
-        console.log("new animation", newAnimation);
+        newAnimation.ID = animation._id;
         res.status(200).send(newAnimation);
 
     } catch(err) {

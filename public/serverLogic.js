@@ -1,5 +1,6 @@
 import data from './animationData.js';
-import { canvasWidth, canvasHeight } from './script.js';
+import { canvasWidth, canvasHeight, takeComputedSizeForCanvas } from './script.js';
+import animationLogic from './animationLogic.js';
 
 // modal
 var modal = document.getElementById("myModal");
@@ -47,7 +48,14 @@ function popUpDeleteSuccessfullModal(ID) {
     modal.style.display = "block";
     modal_content.innerHTML = 
         `<span class="close">&times;</span>
-        <p>Deleted animation with id: ` + ID.ID + `</p><br>`;
+        <p>Successfully deleted animation with id: ` + ID.ID + `</p><br>`;
+}
+
+function popUpReadSuccessfullModal(ID) {
+    modal.style.display = "block";
+    modal_content.innerHTML = 
+        `<span class="close">&times;</span>
+        <p>Successfully read animation with id: ` + ID.ID + `</p><br>`;
 }
 
 // server connection functions
@@ -77,12 +85,10 @@ async function saveAnimation() {
         // TODO: else HTTP POST 
 
         newAnimation.public = isPublic;
-        console.log(canvasWidth, canvasHeight);
         
+        takeComputedSizeForCanvas();
         newAnimation.canvasWidth = canvasWidth;
         newAnimation.canvasHeight = canvasHeight;
-
-        console.log(newAnimation);
         
 
         try {
@@ -128,9 +134,10 @@ async function readAnimation() {
             });
 
             if (response.ok) {
-                const data = await response.json();
-                // zczytaj dane do animacji i przeskaluj
-                console.log(`Server's response:`, data); 
+                const animation = await response.json();
+                takeComputedSizeForCanvas();
+                animationLogic.animationToClientData(animation, canvasWidth, canvasHeight);
+                popUpReadSuccessfullModal(animation);
             } else {
                 switch (response.status) {
                     case 400:
