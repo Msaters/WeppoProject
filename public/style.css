@@ -133,6 +133,15 @@ main {
   width: 40vw;
 }
 
+#settingRotationForm {
+  position: relative;
+  left: 6em;
+}
+
+#rotationInput {
+  width: 82%;
+}
+
 .authInputButton {
   width: 40.5vw;
 }
@@ -259,10 +268,26 @@ main {
   border-color: #a2a6ac #979aa1 #82858a;
 }
 
-.button-14:focus {
-  border-color: #e77600;
-  box-shadow: rgba(228, 121, 17, .5) 0 0 3px 2px;
-  outline: 0;
+.button-14.animate {
+  animation: clickAnimation 0.3s ease-in-out;
+}
+
+@keyframes clickAnimation {
+  0% {
+    border-color: #e77600;
+    box-shadow: rgba(228, 121, 17, .5) 0 0 3px 2px;
+    transform: scale(1.00);
+  }
+  50% {
+    border-color: rgba(#e77600, .8);
+    box-shadow: rgba(228, 121, 17, .35) 0 0 3px 2px;
+    transform: scale(1.03);
+  }
+  100% {
+    border-color: rgba(#e77600, .5);
+    box-shadow: rgba(228, 121, 17, .2) 0 0 3px 2px;
+    transform: scale(1.00);
+  }
 }
 
 .input {

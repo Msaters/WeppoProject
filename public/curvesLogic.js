@@ -1,6 +1,6 @@
 import pageLogic from './pagesLogic.js';
 import data from './animationData.js';
-import { updateCurveCounter } from './script.js';
+import { updateCurveCounter, canvasWidth, canvasHeight } from './script.js';
 import { createPointsWithDeCastlejau } from "/drawingBezierLogic.js";
 
 
@@ -89,6 +89,16 @@ function getAllCurvesFromActualPage() {
     return allCurves;
 }
 
+function getAllPointsFromCurves(curves) {
+    let allPoints = [];
+    for (const curve of curves) {
+        for (const point of curve.points) {
+            allPoints.push(point);
+        }
+    }
+    return allPoints;
+}
+
 // draging logic
 function isCurveClicked(bezierPoints, startingX, startingY, reachingWidth, reachingHeight) {
     
@@ -142,6 +152,26 @@ function dragPage(startingX, startingY, endingX, endingY, points) {
     movePoints(points, endingX - startingX, endingY - startingY);
 }
 
+//rotate logic
+
+// Funkcja obrotu punktu o kąt theta
+function rotatePoint(point, angle, cx, cy) {
+    // Przesunięcie punktu względem środka
+    let dx = point.xcord - cx;
+    let dy = point.ycord - cy;
+
+    // Zastosowanie wzoru obrotu
+    point.xcord = dx * Math.cos(angle) - dy * Math.sin(angle) + cx;
+    point.ycord = dx * Math.sin(angle) + dy * Math.cos(angle) + cy;
+}
+
+function rotatePoints(points) {
+    for (const point of points) {
+        rotatePoint(point, data.angleRadians, canvasWidth / 2, canvasHeight / 2);
+    }
+}
+
+
 export default {
     createNewCurve,
     addNewCurve,
@@ -155,5 +185,7 @@ export default {
     isCurveClicked,
     dragPoints,
     dragCurve,
-    dragPage
+    dragPage,
+    rotatePoints,
+    getAllPointsFromCurves
 };

@@ -40,6 +40,7 @@
                         <button id="copyPage" class="pageSettingsButton button-14">copy</button>
                         <button id="deletePage" class="pageSettingsButton button-14">delete</button>
                         <button id="resizePage" class="pageSettingsButton button-14">resize</button>
+                        <button id="undoPage" class="pageSettingsButton button-14">undo</button>
                         <div class="column-group" id="showPreviousPageDiv">
                             <label for="showPreviousPage">show</label>
                             <input type="checkbox" id="showPreviousPage" class="custom-checkbox">
@@ -73,6 +74,7 @@
                         <label for="togglePageSettingforAll">forall</label>
                         <input type="checkbox" id="togglePageSettingforAll" class="custom-checkbox">
                     </div>
+                    <button id="togglePageSettingRotate" class="button-14" style="margin-top: atuo;">rotate</button>
                 </div>
             </div>
 
@@ -155,10 +157,18 @@
             </form>
             <button id="reset">reset</button>
             <div class="column-group">
-                <label for="toggleInput">Pokaz Punkty:</label>
+                <label for="toggleInput">Pokaz Punkty</label>
                 <input type="checkbox" id="toggleInput" checked="true" class="custom-checkbox">
             </div>
         </div>
+
+        <form id="settingRotationForm" class="form-container">
+            <div class="column-group">
+                <label for="rotationInput">rotation angle:</label>
+                <input type="number" id="rotationInput" name="A" min="0" max="360" required class="input">
+                <button type="submit" class="button-14">save</button>
+            </div>
+        </form>
     </footer>
 </body>
 </html>

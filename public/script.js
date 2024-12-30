@@ -58,6 +58,26 @@ export function updateCanvas() {
     drawingLogic.updateCanvas(data.actualPage.curves, ctx, canvasWidth, canvasHeight);
 }
 
+//animations undo
+function addToAnimations() {
+    if(data.pagesRollBackArray.length === data.pagesRollBackLimit) {
+        data.pagesRollBackArray.shift();
+    }
+
+    data.pagesRollBackArray.push(JSON.parse(JSON.stringify(data.animation)));
+}
+
+function undoPage() {
+    if(data.pagesRollBackArray.length == 0) {
+        return;
+    }
+
+    const previousPageStage = data.pagesRollBackArray.pop();
+    animationLogic.animationToClientData(previousPageStage, canvasWidth, canvasHeight);
+    updateCanvas();
+}
+document.getElementById("undoPage").addEventListener("click", undoPage);
+
 var isClicked = false;
 let startingX;
 let startingY;
@@ -74,9 +94,9 @@ canvas.addEventListener("mousedown", (event) => {
 
     if(data.dragOption === data.dragOptionEnum.NONE) {
         curvesLogic.addPointsToCurve(data.actualCurve, {"xcord": x, "ycord": y});
+        addToAnimations();
         updateCanvas();
     }
-    
 });
 
 //no more draging elements
@@ -94,6 +114,14 @@ canvas.addEventListener("mousemove", async (event) => {
     const rect = canvas.getBoundingClientRect();
     const x = Math.floor(event.clientX - rect.left);
     const y = Math.floor(event.clientY - rect.top);
+    const startingPoint = {
+        "xcord": startingX,
+        "ycord": startingY
+    }
+    const endingPoint = {
+        "xcord": x,
+        "ycord": y
+    }
     let curve;
     let curves;
     let points;
@@ -117,7 +145,8 @@ canvas.addEventListener("mousemove", async (event) => {
                 curvesLogic.dragCurve(startingX, startingY, x, y, curves, data.dragRange, data.dragRange);
                 break;
             case data.dragOptionEnum.PAGE:
-                curvesLogic.dragPage(startingX, startingY, x, y, curvesLogic.getAllPointsFromActualPage());
+                const pointsPage = curvesLogic.getAllPointsFromActualPage();
+                curvesLogic.dragPage(startingX, startingY, x, y, pointsPage);
                 break;
         }
 
@@ -128,8 +157,48 @@ canvas.addEventListener("mousemove", async (event) => {
     });
 
     isFinishedDrawingAsync = await drawingPromise;
+    addToAnimations();
     return;
 });
+
+//roation
+const rotateChosenOption = () => {
+    console.log("siema");
+    
+    if(isFinishedDrawingAsync === false || data.dragOption === data.dragOptionEnum.NONE) {
+        return;
+    }
+
+    let forAll = document.getElementById("togglePageSettingforAll").checked;
+    let curves;
+
+    if(!forAll) {
+        curves = [data.actualCurve];
+    }  else {
+        curves = curvesLogic.getAllCurvesFromActualPage();
+    }
+
+    switch (data.dragOption) {
+        case data.dragOptionEnum.CURVE:
+            curvesLogic.rotatePoints(curvesLogic.getAllPointsFromCurves(curves));
+            break;
+        case data.dragOptionEnum.PAGE:
+            curvesLogic.rotatePoints(curvesLogic.getAllPointsFromActualPage());
+            break;
+    }
+
+    addToAnimations();
+    updateCanvas();
+}
+document.getElementById("togglePageSettingRotate").addEventListener("click", rotateChosenOption);
+
+
+document.getElementById("settingRotationForm").addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    data.angleDegrees = document.getElementById("rotationInput").value;
+    data.angleRadians = data.angleDegrees * Math.PI / 180;
+})
 
 // curve Logic for buttons
 function addNewCurve() {
@@ -183,6 +252,7 @@ document.getElementById("curveCopy").addEventListener("click", curveCopy);
 
 function CurveUndo() {
     curvesLogic.CurveUndo(data.actualCurve);
+    addToAnimations();
     updateCanvas();
 }
 document.getElementById("CurveUndo").addEventListener("click", CurveUndo);
@@ -410,3 +480,13 @@ document.getElementById("showAnimation").addEventListener("click", () => {
     });
 });
 
+
+// button animation
+document.querySelectorAll('.button-14').forEach(button => {
+    button.addEventListener('click', (event) => {
+      const target = event.target;
+      target.classList.remove('animate'); // Reset animację
+      void target.offsetWidth; // Trigger reflow (reset CSS animacji)
+      target.classList.add('animate'); // Dodaj klasę ponownie
+    });
+});

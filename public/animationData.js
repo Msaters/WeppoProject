@@ -8,6 +8,10 @@ var isActiveHighlighted = false;
 var isShowingPreviousPage = false;
 var dragRange = 10;
 
+// Kąt obrotu w stopniach
+let angleDegrees = 10;
+let angleRadians = angleDegrees * Math.PI / 180; // Konwersja na radiany
+
 const dragOptionEnum = {
     NONE: "none",
     POINT: "point",
@@ -18,11 +22,10 @@ var dragOption = dragOptionEnum.NONE;
 
 var animation = {
     type: "animation",
-    pages: [],
-    // ID: 0,
-    // authKey: ,
-    //PreviewImg: Img
+    pages: []
 }
+var pagesRollBackArray = [];
+var pagesRollBackLimit = 20;
 
 export default {
     animation,
@@ -35,5 +38,8 @@ export default {
     dragOption,
     dragOptionEnum,
     dragRange,
-    isShowingPreviousPage
+    isShowingPreviousPage,
+    angleRadians,
+    pagesRollBackArray,
+    pagesRollBackLimit
 }
