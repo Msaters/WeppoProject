@@ -1,0 +1,48 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%; 
+  overflow: auto; 
+}
+
+body {
+  background-color: #888;
+  font-family: 'Roboto', sans-serif;
+}
+
+header, footer {
+  text-align: center;
+  padding: 32px;
+}
+
+main {
+  width: 100%;
+  min-height: 100vh;
+}
+
+#imagesDiv {
+  width: 100%;
+  height: 100%;
+  display: flex;  
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  gap: 10px;
+  column-gap: 30px;
+}
+
+#imagesDiv img {
+  max-width: 100%;
+  width: 450px;
+  height: 400px;
+  transition: box-shadow 0.4s, border-radius 1s;
+  display: inline-block; 
+  padding: 0; /* Brak dodatkowych odstępów */
+  margin: 0;
+}
+
+#imagesDiv img:hover {
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); 
+  cursor: pointer;
+}

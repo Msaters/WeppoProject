@@ -75,6 +75,21 @@ function updateCanvas(curves, ctx, canvasWidth, canvasHeight) {
     }
 }
 
+function updateWithoutClearingCanvas(curves, ctx, canvasWidth, canvasHeight) {
+    if(data.isShowingPreviousPage && data.PageIndex !== 0) {
+        updateCanvasWithPreviousPage(data.animation.pages[data.PageIndex - 1].curves, ctx);
+    }
+
+    for (let index = 0; index < curves.length; index++) {
+        let curve = curves[index];
+        let settings = curve.settings;
+        if(index === data.actualCurveIndex && data.isActiveHighlighted)
+            drawCurve(curve.points, ctx, data.pointsVisibility, settings.r, settings.g, settings.b, settings.a, settings.lineWidth, settings.pointWidth, settings.pointHeight, true);   
+        else
+            drawCurve(curve.points, ctx, data.pointsVisibility, settings.r, settings.g, settings.b, settings.a, settings.lineWidth, settings.pointWidth, settings.pointHeight, false);   
+    }
+}
+
 let uiElementsDisplayValues;
 function showNextAnimation(pages, ctx, canvasWidth, canvasHeight, delay) {
     setTimeout(() => {
@@ -113,5 +128,6 @@ function showAnimation(animation, ctx, canvasWidth, canvasHeight, delay) {
 
 export default {
     updateCanvas,
-    showAnimation
+    showAnimation,
+    updateWithoutClearingCanvas
 }

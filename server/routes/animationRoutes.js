@@ -10,9 +10,7 @@ router.post('/save-animation', (req, res) => {
 
     newAnimation.save()
         .then((savedAnimation) => {
-            console.log('Animation saved!');
-            console.log('Animation ID:', savedAnimation.ID); 
-            console.log('Auth Key:', savedAnimation.authKey);
+            console.log('Animation successfully saved!');
             res.status(201).send({
                 ID: savedAnimation.ID,
                 authKey: savedAnimation.authKey
@@ -133,5 +131,36 @@ router.delete('/delete-animation', async (req, res) => {
     }
 });
 
+router.get('/getPublicAnimations', async (req, res) => {
+    const lastDate = req.query.lastDate;
+    const limit = parseInt(req.query.limit);
+    
+    try {
+        let query = { public: true };
+        if (lastDate) {
+            query.createdAt = { $gt: new Date(lastDate) };
+        }
+        
+        const animations  = await Animation.find(query).sort({ createdAt: 1 }).limit(limit);
+
+        if(animations.length === 0) {
+            console.log("No more data to read from public animations");
+            return res.status(204).send();
+        }
+        
+        res.status(200).send(animations);
+
+    } catch(err) {
+        if(err instanceof mongoose.Error.CastError) {
+            console.log("CastError while deleting");
+            res.status(400).send();
+            return;
+        }
+
+        console.log("Error deleting animation: ", err);
+        res.status(500).send(err);
+    }
+    
+});
 
 module.exports = router;

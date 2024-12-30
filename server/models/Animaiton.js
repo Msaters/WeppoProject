@@ -37,7 +37,8 @@ const animationSchema = new Schema({
     authKey: { type: String, default: uuidv4 },
     public: { type: Boolean, required: true },
     canvasWidth: { type: Number, required: true },
-    canvasHeight: { type: Number, required: true }
+    canvasHeight: { type: Number, required: true },
+    createdAt: { type: Date, default: Date.now }
 })
 
 animationSchema.virtual('ID').get(function () {

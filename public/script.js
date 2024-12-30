@@ -22,7 +22,10 @@ export function takeComputedSizeForCanvas() {
 }
 
 export function getCanvasImgURL() {
-    const img = canvas.toDataURL();
+    ctx.fillStyle = '#a7a1a1'; 
+    ctx.fillRect(0, 0, canvas.width, canvas.height); 
+    drawingLogic.updateWithoutClearingCanvas(data.actualPage.curves, ctx, canvasWidth, canvasHeight);
+    const img = canvas.toDataURL('image/png');
     updateCanvas();
     return img;
 }
