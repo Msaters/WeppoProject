@@ -1,4 +1,13 @@
 var lastDate = null;
+var _isLoaded = false;
+
+function getIsLoaded() {
+    return _isLoaded;
+}
+
+function setIsLoaded(value) {
+    _isLoaded = value;
+}
 
 async function getSomePublicAnimations(limit) {
     try {
@@ -8,12 +17,12 @@ async function getSomePublicAnimations(limit) {
         if(response.ok) {
             if(response.status === 204) {
                 console.log("no more public animations to read");
+                setIsLoaded(true);
                 return;
             }
 
             const animations = await response.json();
             lastDate = animations[animations.length - 1].createdAt;
-            console.log("done ok", animations);
             return animations;
         }
 
@@ -33,5 +42,7 @@ async function getSomePublicAnimations(limit) {
 }
 
 export default {
-    getSomePublicAnimations
+    getSomePublicAnimations,
+    getIsLoaded,
+    setIsLoaded
 }

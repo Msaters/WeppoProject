@@ -145,21 +145,7 @@ async function saveAnimationOrPut() {
 }
 document.getElementById("saveAnimation").addEventListener("click", saveAnimationOrPut);
 
-async function readAnimation() {
-    modal.style.display = "block";
-    modal_content.innerHTML = 
-        `<span class="close">&times;</span>
-        <form id="readAnimationForm" class="modalForm">
-            <label for="readAnimationId">id:</label>
-            <input type="text" id="readAnimationId" name="readAnimationId" required class="authInput"><br>
-            <button type="submit" class="authInputButton">send</button>
-    </form>`
-
-    document.getElementById("readAnimationForm").addEventListener("submit", async function(event) {
-        event.preventDefault(); 
-
-        const ID  = document.getElementById("readAnimationId").value;
-
+async function getAnimationFromServer(ID, doIRefresh) {
         try {
             const response = await fetch(`/get-animation/${ID}`, {
                 method: 'GET'
@@ -170,6 +156,7 @@ async function readAnimation() {
                 takeComputedSizeForCanvas();
                 animationLogic.animationToClientData(animation, canvasWidth, canvasHeight);
                 popUpReadSuccessfullModal(animation);
+                return;
             } else {
                 switch (response.status) {
                     case 400:
@@ -190,6 +177,27 @@ async function readAnimation() {
             popUpServerErrorModal();
             console.error('server error:', error);
         }
+
+        if(doIRefresh) {
+            window.location.href = "./";
+            alert("wrong id");
+        }
+}
+
+async function readAnimation() {
+    modal.style.display = "block";
+    modal_content.innerHTML = 
+        `<span class="close">&times;</span>
+        <form id="readAnimationForm" class="modalForm">
+            <label for="readAnimationId">id:</label>
+            <input type="text" id="readAnimationId" name="readAnimationId" required class="authInput"><br>
+            <button type="submit" class="authInputButton">send</button>
+    </form>`
+
+    document.getElementById("readAnimationForm").addEventListener("submit", async function(event) {
+        event.preventDefault(); 
+        const ID = document.getElementById("readAnimationId").value;
+        getAnimationFromServer(ID, false);
     });
 }
 document.getElementById("readAnimation").addEventListener("click", readAnimation);
@@ -252,5 +260,5 @@ const deleteAnimation = async function () {
 document.getElementById("deleteAnimation").addEventListener("click", deleteAnimation);
 
 export default {
-
+    getAnimationFromServer
 }

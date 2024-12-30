@@ -1,33 +1,52 @@
 import serverLogicPublic from "./serverLogicPublic.js";
 
-document.addEventListener('scroll', function() {
-    console.log("scrolling");
-    
-    // check if user came to the end of the website
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight-200) {
-        console.log('Dotarłeś do końca strony!');
+const imagesDiv = document.getElementById("imagesDiv");
+var isLoading = false;
+
+imagesDiv.addEventListener("click", (event) => {
+    if (event.target.tagName.toLowerCase() === 'img') {
+        window.location.href = `./?id=${event.target.id}`;
     }
 });
 
 function addImage(animation) {
-    const imagesDiv = document.getElementById('imagesDiv');
     const img = document.createElement('img');
     img.src = animation.previewImage;
-    //id animacji img.alt = 'Dynamic Image';
+    img.alt = "Canvas Image"
+    img.id = animation.id;
     imagesDiv.appendChild(img);
 }
 
+async function addImages(limit) {
+    isLoading = true;
+    const animations = await serverLogicPublic.getSomePublicAnimations(limit);
+    if(animations == null) {
+        return;
+    }
 
-async function addanim() {
-    const animations = await serverLogicPublic.getSomePublicAnimations(3);
-    console.log("animacje",animations);
-    
     for (const animation of animations) {
         addImage(animation);
     }
 }
-document.getElementById("addanim").addEventListener("click", addanim);
 
-addImage({"previewImage" :'https://placehold.co/450x400'});
-addImage({"previewImage" :'https://placehold.co/450x400'});
-addImage({"previewImage" :'https://placehold.co/450x400'});
+document.addEventListener("scroll", async function() {
+    if(isLoading || serverLogicPublic.getIsLoaded()) {
+        return;
+    }
+
+    var scrollPosition = window.scrollY;  // Current scroll position
+    var documentHeight = document.documentElement.scrollHeight;  // Total height of the document
+    var windowHeight = window.innerHeight;  // Height of the viewport
+
+    // Check if the user is near the bottom of the page
+    if (documentHeight - windowHeight - scrollPosition < 500) {
+        await addImages(6);
+    }
+    isLoading = false;
+});
+
+const initialize = async function() {
+    await addImages(6);
+    isLoading = false;
+}
+initialize();

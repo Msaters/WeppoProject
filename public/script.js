@@ -35,6 +35,8 @@ var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
 var modal_content  = document.getElementById("myModalContet");
 
+const urlParams = new URLSearchParams(window.location.search);
+const URL_id = urlParams.get('id');
 const initialize = () => {
     data.pointsVisibility = true;
     pageLogic.addNewPage(); 
@@ -43,7 +45,14 @@ const initialize = () => {
     data.animation.canvasHeight = canvasHeight;
     data.animation.canvasWidth  = canvasWidth;
 }
-initialize();
+
+if(URL_id == null) {
+    initialize();
+} else {
+    console.log(URL_id);
+    document.getElementById("toggleInput").checked = false;
+    serverLogic.getAnimationFromServer(URL_id, true);
+}
 
 export function updateCanvas() {
     drawingLogic.updateCanvas(data.actualPage.curves, ctx, canvasWidth, canvasHeight);

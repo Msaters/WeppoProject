@@ -3,12 +3,12 @@ html, body {
   padding: 0;
   width: 100%;
   height: 100%; 
-  overflow: auto; 
 }
 
 body {
   background-color: #888;
   font-family: 'Roboto', sans-serif;
+  overflow: scroll; 
 }
 
 header, footer {
@@ -27,8 +27,8 @@ main {
   display: flex;  
   flex-wrap: wrap;
   justify-content: space-evenly;
-  gap: 10px;
-  column-gap: 30px;
+  gap: 25px;
+  row-gap: 30px;
 }
 
 #imagesDiv img {
