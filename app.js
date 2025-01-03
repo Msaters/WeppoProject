@@ -1,12 +1,17 @@
 require('dotenv').config();
 
 const express = require('express');
+const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
 const PORT = 3000;
 
 // Middleware do obsługi statycznych plików HTML
 app.use(express.static(path.join(__dirname, 'public')));
+
+//zmiana limitu
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
 // Endpoint do zapisu współrzędnych
 app.use(express.json());

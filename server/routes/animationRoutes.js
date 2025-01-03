@@ -35,6 +35,7 @@ router.put('/put-animation', async (req, res) => {
                 pages: clientAnimation.pages,
                 canvasHeight: clientAnimation.canvasHeight,
                 canvasWidth: clientAnimation.canvasWidth,
+                previewImage: clientAnimation.previewImage,
                 public: clientAnimation.public
             },
           };
