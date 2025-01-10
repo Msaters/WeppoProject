@@ -27,7 +27,8 @@ var animation = {
 var pagesRollBackArray = [];
 var pagesRollBackLimit = 20;
 
-var reachClosestPointLength = 2.5;
+var isActiveGettingToNearPointOnDrag = false;
+var reachClosestPointLength = 3;
 
 export default {
     animation,
@@ -44,5 +45,6 @@ export default {
     angleRadians,
     pagesRollBackArray,
     pagesRollBackLimit,
-    reachClosestPointLength
+    reachClosestPointLength,
+    isActiveGettingToNearPointOnDrag
 }

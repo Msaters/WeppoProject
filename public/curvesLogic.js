@@ -134,19 +134,23 @@ function movePoints(points, moveX, moveY) {
     }
 }
 
+let searchingForClosePointFinished = true;
 function movePointToClosePoint(point) {
-    let pointsFromPage = getAllPointsFromActualPage();
-    for (const pointFromPage of pointsFromPage) {
-        if(Math.abs(point.xcord - pointFromPage.xcord) <= data.reachClosestPointLength && Math.abs(point.ycord - pointFromPage.ycord) <= data.reachClosestPointLength) {
-            console.log("found point");
-            point.xcord = pointFromPage.xcord;
-            point.ycord = pointFromPage.ycord;
-            return;
+    return new Promise((resolve) => {
+        let pointsFromPage = getAllPointsFromActualPage();
+        for (const pointFromPage of pointsFromPage) {
+            if(Math.abs(point.xcord - pointFromPage.xcord) <= data.reachClosestPointLength && Math.abs(point.ycord - pointFromPage.ycord) <= data.reachClosestPointLength) {
+                console.log("found point");
+                point.xcord = pointFromPage.xcord;
+                point.ycord = pointFromPage.ycord;
+                resolve(true);
+            }
         }
-    }
+        resolve(false);
+    })
 }
 
-function dragPoints(startingX, startingY, endingX, endingY, array, reachingWidth, reachingHeight) {
+async function dragPoints(startingX, startingY, endingX, endingY, array, reachingWidth, reachingHeight) {
     let points = [];
     array.forEach(element => {
         if(Math.abs(element.xcord - startingX) <= reachingWidth && Math.abs(element.ycord - startingY) <= reachingHeight) {
@@ -164,8 +168,11 @@ function dragPoints(startingX, startingY, endingX, endingY, array, reachingWidth
         let point = points[0];
         point.xcord = endingX;
         point.ycord = endingY;
-
-        movePointToClosePoint(point);
+        if(data.isActiveGettingToNearPointOnDrag && searchingForClosePointFinished) {
+            searchingForClosePointFinished = false;
+            await movePointToClosePoint(point);
+            searchingForClosePointFinished = true;
+        }
     }
 }
 

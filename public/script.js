@@ -12,7 +12,7 @@ canvas.width = canvas.offsetWidth; // Ustawienie na szerokość elementu w pikse
 canvas.height = canvas.offsetHeight; // Ustawienie na wysokość elementu w pikselach
 export var canvasWidth = canvas.width;
 export var canvasHeight = canvas.height;
-const ctx = canvas.getContext("2d");
+const ctx = canvas.getContext("2d", { willReadFrequently: true });
 
 export function takeComputedSizeForCanvas() {
     canvas.width = canvas.offsetWidth; 
@@ -160,6 +160,10 @@ canvas.addEventListener("mousemove", async (event) => {
     addToAnimations();
     return;
 });
+
+document.getElementById("toggleDragSettingsNear").addEventListener("click", (event) => {
+    data.isActiveGettingToNearPointOnDrag = event.target.checked;
+})
 
 //roation
 const rotateChosenOption = () => {
@@ -468,23 +472,90 @@ window.onclick = function(event) {
 }
 
 // animation
+
+// animation to GIF
+const gif = new GIF({ workers: 2, quality: 10 });
+
+gif.on('finished', (blob) => {
+    console.log("GIF wygenerowany!");
+    const downloadLink = document.getElementById('download');
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.style.display = 'block';
+    downloadLink.textContent = 'Pobierz GIF';
+    resolve(blob);
+});
+
+gif.on('error', (error) => {
+    console.error("Błąd podczas renderowania GIF-a:", error);
+    reject(error);
+});
+
+gif.on('progress', (progress) => {
+    console.log(`Postęp renderowania: ${Math.round(progress * 100)}%`);
+});
+
 document.getElementById("showAnimation").addEventListener("click", () => {
     modal.style.display = "block";
     modal_content.innerHTML = 
-        `<span class="close">&times;</span>
-        <div class="column-group" style="width: 35%">
-            <label for="delay">Przerwa pomiedzy animacjami w milisekundach</label>
-            <input type="number" id="delay" name="delay" min=5 max=5000 value=400 required><br>
-        </div>
-        <button id="start">start</button>`;
+        `<div id="showAnimationPopUp">
+            <span class="close">&times;</span>
+            <div class="column-group" style="width: 35%">
+                <label for="delay">Przerwa pomiedzy animacjami w milisekundach</label>
+                <input type="number" id="delay" name="delay" min=5 max=5000 value=400 required><br>
+            </div>
+            <button id="start">start</button>
+            <button id="generateGIF" class="button-13">Generuj GIF</button><br>
+            <a id="download" download="animation.gif" style="display:none;">Pobierz GIF</a>
+        </div>`;
 
     document.getElementById("start").addEventListener("click", () => {
         const delay = document.getElementById("delay").value;
         drawingLogic.showAnimation(data.animation, ctx, canvasWidth, canvasHeight, delay);
         modal.style.display = "none";
     });
-});
 
+    
+    document.getElementById("generateGIF").addEventListener("click", async () => {
+        const delay = document.getElementById("delay").value; 
+        const pageArray = [];
+        for (const page of data.animation.pages) {
+            pageArray.push(page);
+        }
+
+        const addPages = 
+        new Promise((resolve) => {
+            function addPageToGIF(pages) {
+                setTimeout(() => {
+                    
+                    if(pages.length == 0) {
+                        gif.render();
+                        console.log("renderowanie");
+                        
+                        resolve(true);
+                        return;
+                    }
+                    
+                    ctx.fillStyle = '#a7a1a1'; 
+                    ctx.fillRect(0, 0, canvas.width, canvas.height); 
+                    console.log(JSON.parse(JSON.stringify(pages)), pages.length, JSON.parse(JSON.stringify(pages[0])));
+                    
+                    drawingLogic.updateWithoutClearingCanvas(pages[0].curves, ctx, canvasWidth, canvasHeight);
+
+                    // Odczyt danych pikselowych z canvas
+                    gif.addFrame(canvas, { delay: delay });
+
+                    pages.shift();
+                    addPageToGIF(pages);
+                }, 100);
+            }
+
+            addPageToGIF(pageArray);
+    });
+
+        await addPages;
+        console.log("nie czekam juz");
+    });
+});
 
 // button animation
 document.querySelectorAll('.button-14').forEach(button => {
@@ -494,4 +565,4 @@ document.querySelectorAll('.button-14').forEach(button => {
       void target.offsetWidth; // Trigger reflow (reset CSS animacji)
       target.classList.add('animate'); // Dodaj klasę ponownie
     });
-});
+})
