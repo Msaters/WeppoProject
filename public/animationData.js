@@ -27,6 +27,8 @@ var animation = {
 var pagesRollBackArray = [];
 var pagesRollBackLimit = 20;
 
+var reachClosestPointLength = 2.5;
+
 export default {
     animation,
     actualCurveIndex,
@@ -41,5 +43,6 @@ export default {
     isShowingPreviousPage,
     angleRadians,
     pagesRollBackArray,
-    pagesRollBackLimit
+    pagesRollBackLimit,
+    reachClosestPointLength
 }

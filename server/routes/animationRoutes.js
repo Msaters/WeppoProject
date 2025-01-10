@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.post('/save-animation', (req, res) => {
     const animation = req.body;
+    console.log(animation.pages.curves);
 
     const newAnimation = new Animation(animation);
 

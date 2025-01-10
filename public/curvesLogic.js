@@ -89,6 +89,22 @@ function getAllCurvesFromActualPage() {
     return allCurves;
 }
 
+function updateCurveSettings(curve, R, G, B, A, LineWidth, PointWidth, PointHeight) {
+    let settings = curve.settings;
+    if(PointWidth !== "" && PointHeight !== "") {
+        settings.pointWidth = PointWidth;
+        settings.pointHeight = PointHeight;
+    }
+
+    settings.r = R;
+    settings.g = G;
+    settings.b = B;
+    settings.a = A;
+    settings.lineWidth = LineWidth;
+    console.log(LineWidth, settings.lineWidth);
+    
+}
+
 function getAllPointsFromCurves(curves) {
     let allPoints = [];
     for (const curve of curves) {
@@ -118,6 +134,18 @@ function movePoints(points, moveX, moveY) {
     }
 }
 
+function movePointToClosePoint(point) {
+    let pointsFromPage = getAllPointsFromActualPage();
+    for (const pointFromPage of pointsFromPage) {
+        if(Math.abs(point.xcord - pointFromPage.xcord) <= data.reachClosestPointLength && Math.abs(point.ycord - pointFromPage.ycord) <= data.reachClosestPointLength) {
+            console.log("found point");
+            point.xcord = pointFromPage.xcord;
+            point.ycord = pointFromPage.ycord;
+            return;
+        }
+    }
+}
+
 function dragPoints(startingX, startingY, endingX, endingY, array, reachingWidth, reachingHeight) {
     let points = [];
     array.forEach(element => {
@@ -136,6 +164,8 @@ function dragPoints(startingX, startingY, endingX, endingY, array, reachingWidth
         let point = points[0];
         point.xcord = endingX;
         point.ycord = endingY;
+
+        movePointToClosePoint(point);
     }
 }
 
@@ -182,6 +212,7 @@ export default {
     CurveUndo,
     getAllPointsFromActualPage,
     getAllCurvesFromActualPage,
+    updateCurveSettings,
     isCurveClicked,
     dragPoints,
     dragCurve,

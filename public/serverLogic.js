@@ -92,6 +92,7 @@ async function saveAnimationOrPut() {
         newAnimation.canvasHeight = canvasHeight;
         newAnimation.previewImage = getCanvasImgURL();
         var response;
+        
 
         try {
             if(authKey !== "none") {

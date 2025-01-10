@@ -202,8 +202,6 @@ document.getElementById("settingRotationForm").addEventListener("submit", (event
 
 // curve Logic for buttons
 function addNewCurve() {
-    console.log("siema");
-    
     curvesLogic.addNewCurve(data.actualPage.curves);
 }
 document.getElementById("addNewCurve").addEventListener("click", addNewCurve);
@@ -303,17 +301,24 @@ document.getElementById("settingsForm").addEventListener("submit", (event) => {
     const PointHeight = document.getElementById("PointHeight").value;
     document.getElementById("PointHeight").value = "";
 
-    let settings = data.actualCurve.settings;
-    if(PointWidth !== "" && PointHeight !== "") {
-        settings.pointWidth = PointWidth;
-        settings.pointHeight = PointHeight;
+    console.log(LineWidth);
+    
+    
+    switch (data.dragOption) {
+        case data.dragOptionEnum.NONE:
+        case data.dragOptionEnum.CURVE:
+            curvesLogic.updateCurveSettings(data.actualCurve, R, G, B, A, LineWidth. PointWidth, PointHeight);
+            break;
+
+        case data.dragOptionEnum.PAGE:
+            let curves = curvesLogic.getAllCurvesFromActualPage();
+            for (const curve of curves) {
+                curvesLogic.updateCurveSettings(curve, R, G, B, A, LineWidth, PointWidth, PointHeight);
+                console.log(curve);   
+            }
+            break;
     }
 
-    settings.r = R;
-    settings.g = G;
-    settings.b = B;
-    settings.a = A;
-    settings.lineWidth = LineWidth;
     updateCanvas();
 });
 
